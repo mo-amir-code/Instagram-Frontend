@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "../pages/Home";
 import DashboardLayout from "../layouts";
 import Explore from "../pages/Explore";
@@ -13,8 +10,19 @@ import OTPVerifyForm from "../components/Auth/OTPVerifyForm";
 import { useSelector } from "react-redux";
 import LoginAccount from "../pages/LoginAccount";
 import ProfilePage from "../pages/ProfilePage";
+import Reels from "../pages/Reels";
+import Messages from "../pages/Messages";
+import { useEffect } from "react";
+import { connectSocket } from "../socket";
 
 const router = () => {
+  const { isLoggedIn, loggedInUserId } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      connectSocket(loggedInUserId);
+    }
+  }, [isLoggedIn]);
 
   const router = createBrowserRouter([
     {
@@ -34,8 +42,16 @@ const router = () => {
           element: <Explore />,
         },
         {
+          path: "reels",
+          element: <Reels />,
+        },
+        {
+          path: "direct/:userId",
+          element: <Messages />,
+        },
+        {
           path: ":profile",
-          element: <ProfilePage/>,
+          element: <ProfilePage />,
         },
         {
           path: "signin-error",

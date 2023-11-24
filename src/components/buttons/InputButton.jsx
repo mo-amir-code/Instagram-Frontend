@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { convertVideoToBase64 } from "../../services/appServices";
 
-const InputButton = ({ setFile, setFileName, setFileType, setFileBase64 }) => {
+const InputButton = ({ setFile, setFileName, setFileType }) => {
   const inputRef = useRef();
 
   const handleSelectFile = (e) => {
@@ -11,7 +11,6 @@ const InputButton = ({ setFile, setFileName, setFileType, setFileBase64 }) => {
       setFileType("image");
     } else {
       setFileType("video");
-      convertVideoToBase64(e.target.files[0], setFileBase64)
     }
   };
 

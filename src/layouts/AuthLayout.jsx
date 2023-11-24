@@ -3,6 +3,7 @@ import Logo from "../assets/logo/instagram.png";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AuthLoader from "../components/loaders/AuthLoader";
+import ProfileLoader from "../components/loaders/ProfileLoader";
 
 const AuthLayout = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const AuthLayout = () => {
     <div className="flex min-h-screen">
       <div className={`w-full flex justify-center items-center`}>
         {loginStatus === "pending" ? (
-          <AuthLoader />
+          <ProfileLoader />
         ) : (
           <section className="w-[300px] h-auto py-3">
             <div className="border border-text-secondary pb-5 pt-0 px-4">

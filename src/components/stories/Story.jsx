@@ -6,7 +6,8 @@ const border_color =
 
 const Story = () => {
   return (
-    <div style={{ border: `2px solid red` }} className="rounded-full p-[2px] cursor-pointer">
+    <div className="flex items-center justify-center" >
+    <div style={{ border: `2px solid red` }} className="rounded-full p-[2px] cursor-pointer overflow-hidden">
       <div className="flex justify-center items-center rounded-full overflow-hidden w-[60px] h-[60px]">
         <img
           src={faker.image.avatar()}
@@ -14,6 +15,7 @@ const Story = () => {
           width={"60px"}
         />
       </div>
+    </div>
     </div>
   );
 };

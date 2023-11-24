@@ -4,7 +4,6 @@ import Picker from "@emoji-mart/react";
 
 const EmojiPickerModal = ({ setInputText, perLine }) => {
   const handleEmoji = (e) => {
-    console.log(e.native)
     setInputText((prev) => prev + e.native);
   };
 

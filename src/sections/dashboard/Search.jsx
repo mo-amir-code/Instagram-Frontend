@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "../../components/search/SearchBar";
 import { X } from "@phosphor-icons/react";
 import SearchedResult from "../../components/search/SearchedResult";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSearchResultsAsync } from "../../redux/features/app/appAsyncThunk";
 
 const Search = () => {
+  const [searching, setSearching] = useState(null);
+  const { searchResults, searchStatus } = useSelector((state) => state.app);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (searching && searching.length > 0) {
+      dispatch(fetchSearchResultsAsync({ searching }));
+    }
+  }, [searching]);
+
   return (
     <section
       className={`flex flex-col bg-bg-primary w-[400px] h-screen rounded-lg border-r border-hover-primary slideModal`}
@@ -15,7 +27,7 @@ const Search = () => {
 
       {/* Input search */}
       <div className="py-4 mb-2 px-6 relative">
-        <SearchBar />
+        <SearchBar setSearching={setSearching} />
         <button className="absolute rounded-full top-[40%] right-9 bg-text-primary p-[2px]">
           <X size={10} />
         </button>
@@ -36,8 +48,8 @@ const Search = () => {
 
       {/* Searched results */}
       <div className="flex flex-col overflow-y-auto ">
-        {[1, 2, 3, 4, 5, 6, 7].map((el, idx) => (
-          <SearchedResult key={idx} />
+        {searchResults.map((el, idx) => (
+          <SearchedResult key={idx} {...el} />
         ))}
       </div>
     </section>

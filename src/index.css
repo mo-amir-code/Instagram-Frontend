@@ -185,6 +185,124 @@ body {
   }
 }
 
+.playIn{
+  transform: scale(1);
+  animation: playIn 0.5s ease-in-out;
+}
+
+@keyframes playIn {
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+.playOut{
+  transform: scale(0);
+  animation: playOut 0.5s ease-in-out;
+}
+
+@keyframes playOut {
+  0%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(0);
+  }
+}
+
+.playBgIn{
+  opacity: 1;
+  animation: playBgIn 0.5s ease-in-out;
+}
+
+@keyframes playBgIn {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+.playBgOut{
+  opacity: 0;
+  animation: playBgOut 0.5s ease-in-out;
+}
+
+@keyframes playBgOut {
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+.videoShadow{
+  box-shadow: 0px 0px 1000px rgba(234, 108, 108, 0.126);
+}
+
+
+.uiEffect{
+  animation: uiAni 2s ease-in-out infinite;
+}
+
+@keyframes uiAni {
+  0%{
+    opacity: 0.4;
+  }
+  50%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0.4;
+  }
+}
+
+
+.triangle_topLeft{
+  width: 0;
+  height: 0;
+  border-top: 100px solid blue;
+  border-right: 100px solid transparent;
+}
+
+.scaleIn{
+  transform: scale(1);
+  animation: scaleInAni 0.2s ease-in-out;
+}
+
+@keyframes scaleInAni {
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+.scaleOut{
+  transform: scale(0);
+  animation: scaleOutAni 0.2s ease-in-out;
+}
+
+@keyframes scaleOutAni {
+  0%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(0);
+  }
+}
+
+
+
+
+
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

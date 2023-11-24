@@ -16,6 +16,8 @@ import {
   commentLike,
   commentDisLike,
   newVideoPost,
+  fetchReels,
+  fetchSearchResults,
 } from "./appAPI";
 
 export const newPostAsync = createAsyncThunk("app/newpost", async (data) => {
@@ -133,6 +135,22 @@ export const newVideoPostAsync = createAsyncThunk(
   "app/newVideoPost",
   async (data) => {
     const response = await newVideoPost(data);
+    return response;
+  }
+);
+
+export const fetchReelsAsync = createAsyncThunk(
+  "app/fetchReels",
+  async (data) => {
+    const response = await fetchReels(data);
+    return response;
+  }
+);
+
+export const fetchSearchResultsAsync = createAsyncThunk(
+  "app/fetchSearchResults",
+  async (data) => {
+    const response = await fetchSearchResults(data);
     return response;
   }
 );

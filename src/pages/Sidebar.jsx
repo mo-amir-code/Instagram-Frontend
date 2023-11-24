@@ -110,7 +110,9 @@ const Sidebar = ({ pcNavModal }) => {
 
   const handleNavbar = (idx) => {
     if (idx !== 6) {
+      // if(idx !== 4){
       dispatch(setActive(idx));
+      // }
     }
     switch (idx) {
       case 0:
@@ -125,17 +127,23 @@ const Sidebar = ({ pcNavModal }) => {
         dispatch(setNavModal(null));
         break;
       case 3:
+        navigate("/reels");
         dispatch(setNavModal(null));
         break;
       case 4:
+        if (!isLoggedIn) {
+          toast.error("Login your account");
+          break;
+        }
         dispatch(setNavModal("messages"));
+        navigate("/direct/inbox");
         break;
       case 5:
         dispatch(setNavModal("notifications"));
         break;
       case 6:
-        if(!isLoggedIn){
-          toast.error("Login your account")
+        if (!isLoggedIn) {
+          toast.error("Login your account");
           break;
         }
         dispatch(setNavModal(null));

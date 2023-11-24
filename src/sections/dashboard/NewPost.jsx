@@ -1,5 +1,5 @@
 import { Image, Video, X } from "@phosphor-icons/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   resetPostStatus,
@@ -13,8 +13,11 @@ const NewPost = () => {
   const [file, setFile] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [fileName, setFileName] = useState(null);
-  const [fileBase64, setFileBase64] = useState(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetPostStatus());
+  }, []);
 
   return (
     <section className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm text-text-primary">
@@ -41,7 +44,6 @@ const NewPost = () => {
             setFile={setFile}
             setFileName={setFileName}
             setFileType={setFileType}
-            setFileBase64={setFileBase64}
           />
         </div>
       ) : (
@@ -58,7 +60,6 @@ const NewPost = () => {
               file={file}
               setFile={setFile}
               fileName={fileName}
-              fileBase64={fileBase64}
             />
           )}
         </>

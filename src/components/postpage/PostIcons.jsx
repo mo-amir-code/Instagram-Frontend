@@ -1,71 +1,103 @@
 import React, { useEffect, useState } from "react";
-import { BookmarkSimple, ChatCircle, Heart, PaperPlaneTilt } from "@phosphor-icons/react";
-import redHeart from "../../assets/icons/redHeart.svg"
-import bookmark from "../../assets/icons/bookmark.svg"
+import {
+  BookmarkSimple,
+  ChatCircle,
+  Heart,
+  PaperPlaneTilt,
+} from "@phosphor-icons/react";
+import redHeart from "../../assets/icons/redHeart.svg";
+import bookmark from "../../assets/icons/bookmark.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { detectLike, detectSave } from "../../services/appServices";
 import toast from "react-hot-toast";
-import { likePostAsync, removeLikedPostAsync, removeSavedPostAsync, savePostAsync } from "../../redux/features/app/appAsyncThunk";
+import {
+  likePostAsync,
+  removeLikedPostAsync,
+  removeSavedPostAsync,
+  savePostAsync,
+} from "../../redux/features/app/appAsyncThunk";
 
 const PostIcons = () => {
-    const [isSaved, setIsSaved] = useState(false);    
-    const [liked, setLiked] = useState(false);
-    const { postPageInfo } = useSelector((state)=>state.app);
-    const { loggedInUserId, loginStatus } = useSelector((state)=>state.auth);
-    const dispatch = useDispatch();
+  const [isSaved, setIsSaved] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const { postPageInfo } = useSelector((state) => state.app);
+  const { loggedInUserId, loginStatus } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-      detectLike(postPageInfo.likes, loggedInUserId, setLiked);
-      detectSave(postPageInfo.saved, loggedInUserId, setIsSaved);
-    }, []);
+  useEffect(() => {
+    detectLike(postPageInfo.likes, loggedInUserId, setLiked);
+    detectSave(postPageInfo.saved, loggedInUserId, setIsSaved);
+  }, []);
 
-    const handleLike = () => {
-      console.log("hello");
-      if (loginStatus === "success") {
-        dispatch(likePostAsync({ postId: postPageInfo._id, userId: loggedInUserId }));
-        setLiked(true);
-      } else {
-        toast.error("Login your account");
-      }
-    };
-
-    const handleRemoveLike = () => {
-      if (loginStatus === "success") {
-        dispatch(removeLikedPostAsync({ postId: postPageInfo._id, userId: loggedInUserId }));
-        setLiked(false);
-      } else {
-        toast.error("Login your account");
-      }
-    };
-
-    const handleSavePost = () => {
-      if (loginStatus !== "success") {
-        return toast.error("Login your account");
-      }
-  
+  const handleLike = () => {
+    if (loginStatus === "success") {
       const data = {
         postId: postPageInfo._id,
         userId: loggedInUserId,
+        type: "post",
       };
-  
-      dispatch(savePostAsync(data));
-      setIsSaved(true);
+      if (postPageInfo.type === "reel") {
+        data.type = "reel";
+      }
+      dispatch(likePostAsync(data));
+      setLiked(true);
+    } else {
+      toast.error("Login your account");
+    }
+  };
+
+  const handleRemoveLike = () => {
+    if (loginStatus === "success") {
+      dispatch(
+        removeLikedPostAsync({
+          postId: postPageInfo._id,
+          userId: loggedInUserId,
+        })
+      );
+      setLiked(false);
+    } else {
+      toast.error("Login your account");
+    }
+  };
+
+  const handleSavePost = () => {
+    if (loginStatus !== "success") {
+      return toast.error("Login your account");
+    }
+
+    const data = {
+      postId: postPageInfo._id,
+      userId: loggedInUserId,
+      type: "post",
     };
 
-    const handleRemoveSaved = () => {
-      if (loginStatus !== "success") {
-        return toast.error("Login your account");
-      }
-  
-      const data = {
-        postId: postPageInfo._id,
-        userId: loggedInUserId,
-      };
-  
-      dispatch(removeSavedPostAsync(data));
-  
-      setIsSaved(false);
+    if (postPageInfo.type === "reel") {
+      data.type = "reel";
+    }
+
+    dispatch(savePostAsync(data));
+    setIsSaved(true);
+  };
+
+  const handleRemoveSaved = () => {
+    if (loginStatus !== "success") {
+      return toast.error("Login your account");
+    }
+
+    const data = {
+      postId: postPageInfo._id,
+      userId: loggedInUserId,
+      type: "post",
     };
+
+    if (postPageInfo.type === "reel") {
+      data.type = "reel";
+    }
+
+    dispatch(removeSavedPostAsync(data));
+
+    setIsSaved(false);
+  };
 
   return (
     <div className="flex items-center justify-between">

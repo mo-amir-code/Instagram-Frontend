@@ -251,3 +251,49 @@ export const convertVideoToBase64 = async (file, setFile) => {
   };
   reader.readAsDataURL(file);
 };
+
+export const setConversations = (conversations, payload) => {
+  const newConversations = JSON.parse(JSON.stringify(conversations));
+  const newPayload = JSON.parse(JSON.stringify(payload));
+  const { conversationId, messages, user } = newPayload;
+
+  const convIndex = newConversations.findIndex(
+    (el) => el.conversationId === conversationId
+  );
+  if (convIndex && convIndex !== -1) {
+    const currConv = newConversations.find(
+      (el) => el.conversationId === conversationId
+    );
+    const data = {
+      conversations: newConversations,
+      currMessages: messages,
+      currConv,
+    };
+    return data;
+  }
+
+  const data = {
+    conversations: newConversations,
+    currMessages: messages,
+    currConv: { conversationId, user, unread: 0 },
+  };
+  return data;
+};
+
+export const checkConversation = (conversations, currConvId) => {
+  const isConv = conversations.find((el) => el.conversationId === currConvId);
+  if (isConv) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const resetUnreadConversation = (convs, currConv) => {
+  const conversations = JSON.parse(JSON.stringify(convs));
+  const convIndex = conversations.findIndex(
+    (conv) => conv.conversationId === currConv
+  );
+  conversations[convIndex].unread = 0;
+  return conversations;
+};

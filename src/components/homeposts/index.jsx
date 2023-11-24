@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import HomePostsLoader from "../loaders/HomePostsLoader";
 import { fetchPostsAsync } from "../../redux/features/app/appAsyncThunk";
+import PostUI from "./PostUI";
 
 const index = () => {
   const dispatch = useDispatch();
@@ -30,8 +31,8 @@ const index = () => {
         next={fetchData}
         hasMore={posts.length != totalPost}
         loader={
-          <div className="h-full w-full flex items-center justify-center">
-            <HomePostsLoader />
+          <div className="flex items-center justify-center w-full py-8">
+            <PostUI />
           </div>
         }
       >

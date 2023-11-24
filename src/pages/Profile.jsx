@@ -23,9 +23,11 @@ import {
   unFollowingUser,
   updateFollowing,
 } from "../redux/features/Auth/authSlice";
+import MessageButton from "../components/buttons/MessageButton";
 
 const Profile = () => {
   const [follow, setFollow] = useState(false);
+  const [mediaTab, setMediaTab] = useState(1);
   const { unknownUserStatus, unknownUserInfo, unknownUserAvatar } = useSelector(
     (state) => state.user
   );
@@ -112,6 +114,7 @@ const Profile = () => {
                   ) : (
                     <FollowingButton handleUnFollowUser={handleUnFollowUser} />
                   )}
+                  <MessageButton/>
                   <UserRecommendation />
                   <DotsThree size={30} />
                 </div>
@@ -155,16 +158,23 @@ const Profile = () => {
         {/* Media section */}
         <section className="border-t border-hover-primary">
           <div className="flex items-center justify-center">
-            <MediaTab />
+            <MediaTab selected={mediaTab} setSelected={setMediaTab} type={"profile"} />
           </div>
         </section>
 
         {/* Posts Section */}
         <section>
           <div className="grid grid-cols-3 gap-1">
-            {userPosts.map((el, idx) => (
-              <Post key={idx} {...el} />
-            ))}
+            {(() => {
+              switch (mediaTab) {
+                case 1:
+                  return userPosts.map((el, idx) => <Post key={idx} {...el} />);
+                case 2:
+                  return userPosts.filter((el)=>el.type !== "post").map((el, idx) => <Post key={idx} {...el} />);
+                default:
+                  return;
+              }
+            })()}
           </div>
         </section>
       </div>

@@ -5,7 +5,10 @@ import {
   DotsThree,
   Heart,
   PaperPlaneTilt,
+  Play,
   Smiley,
+  SpeakerHigh,
+  SpeakerSimpleSlash,
 } from "@phosphor-icons/react";
 import {
   calculateUploadedTime,
@@ -33,7 +36,10 @@ import {
   resetPostPageInfo,
 } from "../../redux/features/app/appSlice";
 import { useNavigate } from "react-router-dom";
-import { unFollowingUser, updateFollowing } from "../../redux/features/Auth/authSlice";
+import {
+  unFollowingUser,
+  updateFollowing,
+} from "../../redux/features/Auth/authSlice";
 
 const Post = ({
   _id,
@@ -56,10 +62,13 @@ const Post = ({
   const [isSaved, setIsSaved] = useState(false);
   const [followButton, setFollowButton] = useState(false);
   const [follow, setFollow] = useState(false);
+  const [muted, setMuted] = useState(true);
+  const [isPlay, setIsPlay] = useState(null);
   const dispatch = useDispatch();
   const commentRef = useRef();
   const navigate = useNavigate();
   const { postPageInfo } = useSelector((state) => state.app);
+  const videoRef = useRef();
 
   useEffect(() => {
     detectLike(likes, loggedInUserId, setLiked);
@@ -88,7 +97,15 @@ const Post = ({
 
   const handleLike = () => {
     if (loginStatus === "success") {
-      dispatch(likePostAsync({ postId: _id, userId: loggedInUserId }));
+      const data = {
+        postId: _id,
+        userId: loggedInUserId,
+        type: "post",
+      };
+      if (type === "reel") {
+        data.type = "reel";
+      }
+      dispatch(likePostAsync(data));
       setLiked(true);
     } else {
       toast.error("Login your account");
@@ -130,7 +147,12 @@ const Post = ({
     const data = {
       postId: _id,
       userId: loggedInUserId,
+      type: "post",
     };
+
+    if (type === "reel") {
+      data.type = "reel";
+    }
 
     dispatch(savePostAsync(data));
     setIsSaved(true);
@@ -144,7 +166,12 @@ const Post = ({
     const data = {
       postId: _id,
       userId: loggedInUserId,
+      type: "post",
     };
+
+    if (type === "reel") {
+      data.type = "reel";
+    }
 
     dispatch(removeSavedPostAsync(data));
 
@@ -182,6 +209,29 @@ const Post = ({
 
   const handleUserProfile = () => {
     navigate(`${user.username}`);
+  };
+
+  const handleMute = () => {
+    if (videoRef.current) {
+      if (muted) {
+        videoRef.current.muted = false;
+      } else {
+        videoRef.current.muted = true;
+      }
+      setMuted(!muted);
+    }
+  };
+
+  const handlePlayToggle = () => {
+    if (videoRef.current) {
+      if (isPlay) {
+        videoRef.current.pause();
+        setIsPlay(false);
+      } else {
+        videoRef.current.play();
+        setIsPlay(true);
+      }
+    }
   };
 
   return (
@@ -227,10 +277,52 @@ const Post = ({
       </div>
       <div
         className={`border border-text-secondary ${
-          type === "post" ? "h-[480px]" : "h-[570px]"
-        } rounded-sm flex items-center justify-center cursor-pointer`}
+          type === "post" ? "h-[480px]" : "h-[534px]"
+        } rounded-sm flex items-center justify-center overflow-hidden relative`}
       >
-        <img src={file} alt={user.name} className="object-cover" />
+        {type === "post" ? (
+          <img src={file} alt={user.name} className="" />
+        ) : (
+          <>
+            <div className="relative">
+              <video
+                ref={videoRef}
+                onClick={() => handlePlayToggle()}
+                className="object-cover w-[300px] h-[534px]"
+                autoPlay
+                loop
+                muted
+              >
+                <source src={file} />
+              </video>
+              <div
+                onClick={() => handleMute()}
+                className="absolute left-2 bottom-2 w-[40px] h-[40px] rounded-full bg-modal-bg flex items-center justify-center text-text-primary cursor-pointer"
+              >
+                {muted ? (
+                  <SpeakerSimpleSlash size={15} />
+                ) : (
+                  <SpeakerHigh size={15} />
+                )}
+              </div>
+            </div>
+            <div
+              onClick={() => handlePlayToggle()}
+              className={`absolute ${isPlay === null && "hidden"}  ${
+                !isPlay && "playBgIn"
+              } ${
+                isPlay && "playBgOut"
+              } top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-bg-primary/60 w-[60px] h-[60px] rounded-full flex items-center justify-center cursor-pointer`}
+            >
+              <Play
+                size={40}
+                className={`${isPlay === null && "opacity-0"}  ${
+                  !isPlay && "playIn"
+                } ${isPlay && "playOut"} `}
+              />
+            </div>
+          </>
+        )}
       </div>
       <div className="space-y-1">
         <div className="flex items-center justify-between">

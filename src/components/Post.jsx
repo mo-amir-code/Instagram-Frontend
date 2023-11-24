@@ -1,14 +1,16 @@
 import React from "react";
 import { ChatTeardropDots, Heart } from "@phosphor-icons/react";
 import { useDispatch, useSelector } from "react-redux";
-import { postPageStatusToggle, resetPostPageInfo } from "../redux/features/app/appSlice";
+import {
+  postPageStatusToggle,
+  resetPostPageInfo,
+} from "../redux/features/app/appSlice";
 import { useNavigate } from "react-router-dom";
 
-function Post({_id, file, likes, comments, description }) {
-  const { postPageInfo } = useSelector((state)=>state.app);
+function Post({ _id, file, likes, comments, description, type }) {
+  const { postPageInfo } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const handlePostView = () => {
     if (postPageInfo?._id !== _id) {
@@ -19,8 +21,19 @@ function Post({_id, file, likes, comments, description }) {
   };
 
   return (
-    <div onClick={()=>handlePostView()} className="relative group cursor-pointer slideModalUpToDown">
-      <img src={file} alt={description} className="w-96 h-72 object-cover" />
+    <div
+      onClick={() => handlePostView()}
+      className="relative group cursor-pointer slideModalUpToDown overflow-hidden"
+    >
+      {type === "post" ? (
+        <img src={file} alt={description} className="w-96 h-72 object-cover" />
+      ) : (
+        <div className="w-96 h-72 flex items-center justify-center">
+          <video className="object-cover" muted>
+            <source src={file} />
+          </video>
+        </div>
+      )}
       <div className="absolute top-0 left-0 h-full w-full bg-black/20 group-hover:flex hidden justify-center items-center postsHoverSlideAnimation">
         <div className="text-text-primary flex items-center justify-between w-[45%]">
           <div className="flex items-center text-base font-semibold space-x-2">

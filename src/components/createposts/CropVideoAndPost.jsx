@@ -7,7 +7,7 @@ import SuccessPost from "./SuccessPost";
 import { newVideoPostAsync } from "../../redux/features/app/appAsyncThunk";
 import { useRef } from "react";
 
-const CropVideoAndPost = ({ setFile, file, fileName, fileBase64 }) => {
+const CropVideoAndPost = ({ setFile, file, fileName }) => {
   const [inputText, setInputText] = useState("");
   const [videoUrl, setVideoUrl] = useState(URL.createObjectURL(file));
   const [isPlay, setIsPlay] = useState(false);
@@ -23,16 +23,15 @@ const CropVideoAndPost = ({ setFile, file, fileName, fileBase64 }) => {
   };
 
   const handleShare = () => {
+    const formData = new FormData();
+    formData.append("video", file);
+    formData.append("description", inputText);
+    formData.append("user", loggedInUserId);
 
-    const data = {
-      description: inputText,
-      file: fileBase64,
-      user: loggedInUserId,
-    };
     if (inputText.length === 0) {
       data.description = fileName;
     }
-    dispatch(newVideoPostAsync(data));
+    dispatch(newVideoPostAsync(formData));
   };
 
   const handlePlayToggle = () => {

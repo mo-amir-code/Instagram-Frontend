@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import {
+  checkConversation,
   filterPosts,
   increamentPostCommentCount,
   pullCommentLike,
@@ -10,11 +11,40 @@ import {
   pushCommentLike,
   pushNewLike,
   pushNewSaved,
+  resetUnreadConversation,
+  setConversations,
 } from "../../../services/appServices";
 import authSlice from "../Auth/authSlice";
-import { commentDisLikeAsync, commentLikeAsync, fetchExplorePostsAsync, fetchMyUserPostAsync, fetchPostInfoAsync, fetchPostsAsync, fetchUserPostAsync, followUserAsync, likePostAsync, newPostAsync, newVideoPostAsync, postCommentAsync, removeLikedPostAsync, removeSavedPostAsync, savePostAsync, unFollowUserAsync } from "./appAsyncThunk"
+import {
+  commentDisLikeAsync,
+  commentLikeAsync,
+  fetchExplorePostsAsync,
+  fetchMyUserPostAsync,
+  fetchPostInfoAsync,
+  fetchPostsAsync,
+  fetchReelsAsync,
+  fetchSearchResultsAsync,
+  fetchUserPostAsync,
+  followUserAsync,
+  likePostAsync,
+  newPostAsync,
+  newVideoPostAsync,
+  postCommentAsync,
+  removeLikedPostAsync,
+  removeSavedPostAsync,
+  savePostAsync,
+  unFollowUserAsync,
+} from "./appAsyncThunk";
 
 const initialState = {
+  directChat: {
+    conversations: [],
+    conversationsStatus: null, // pending, success, error
+    currentConversationUser: null,
+    currentConversation: [],
+    currentConversationStatus: null, // pending, success, error
+    sendingMessageStatus: null // pending, success, error
+  },
   active: 0,
   pcNavModal: null, // Search, Messages, Notifications
   newPostModal: false,
@@ -28,7 +58,12 @@ const initialState = {
   postPageInfoStatus: false,
   postPageStatus: false,
   explorePosts: [],
-  exploreStatus:false
+  exploreStatus: false,
+  reels: [],
+  totalReels: 0,
+  reelsStatus: null, // pending, success, reject
+  searchResults: [],
+  searchStatus: null, // pending, success
 };
 
 const slice = createSlice({
@@ -54,6 +89,73 @@ const slice = createSlice({
       state.postPageInfo = undefined;
       state.postPageInfoStatus = false;
     },
+    currentConversationStatusUpdate(state, action) {
+      state.directChat.currentConversationStatus = action.payload;
+    },
+    updateCurrentConversation(state, action) {
+      const data = setConversations(
+        state.directChat.conversations,
+        action.payload
+      );
+      state.directChat.conversations = data.conversations;
+      state.directChat.currentConversation = data.currMessages;
+      state.directChat.currentConversationUser = data.currConv;
+      state.directChat.currentConversationStatus = "success";
+    },
+    recievedNewMessage(state, action) {
+      const currConv = JSON.parse(
+        JSON.stringify(state.directChat.currentConversationUser)
+      );
+      const convs = JSON.parse(JSON.stringify(state.directChat.conversations));
+      const { message, conversationId, user } = action.payload;
+      // console.log(action.payload, convs);
+      if (conversationId.toString() === currConv?.conversationId.toString()) {
+        state.directChat.currentConversation.push(message);
+        if (!checkConversation(convs, currConv.conversationId)) {
+          const data = {
+            conversationId,
+            user,
+            unread: 0,
+          };
+          state.directChat.conversations.push(data);
+        }
+      } else {
+        const conv = convs.find(
+          (el) => el.conversationId.toString() === conversationId.toString()
+        );
+        const convIndex = convs.findIndex(
+          (el) => el.conversationId.toString() === conversationId.toString()
+        );
+        if (convIndex === -1) {
+          const data = {
+            conversationId,
+            user,
+            unread: 1,
+          };
+          state.directChat.conversations.push(data);
+        } else {
+          conv.unread += 1;
+          state.directChat.conversations[convIndex] = conv;
+        }
+      }
+      state.directChat.sendingMessageStatus = "success"
+    },
+    fetchConversations(state, action) {
+      state.directChat.conversations = action.payload;
+    },
+    selectExistingConversation(state, action) {
+      const { messages, conversation } = action.payload;
+      state.directChat.conversations = resetUnreadConversation(
+        state.directChat.conversations,
+        conversation.conversationId
+      );
+      state.directChat.currentConversation = messages;
+      state.directChat.currentConversationUser = conversation;
+      state.directChat.currentConversationStatus = "success";
+    },
+    sendingMessageStatusUpdate(state, action){
+      state.directChat.sendingMessageStatus = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -205,18 +307,49 @@ const slice = createSlice({
       })
       .addCase(commentLikeAsync.fulfilled, (state, action) => {
         const { likedCommentId, user } = action.payload.data;
-        state.postPageInfo = pushCommentLike(state.postPageInfo, likedCommentId, user);
+        state.postPageInfo = pushCommentLike(
+          state.postPageInfo,
+          likedCommentId,
+          user
+        );
       })
       .addCase(commentLikeAsync.rejected, (state, action) => {
         toast.error(action.error.message);
       })
       .addCase(commentDisLikeAsync.fulfilled, (state, action) => {
         const { unLikedCommentId, user } = action.payload.data;
-        state.postPageInfo = pullCommentLike(state.postPageInfo, unLikedCommentId, user);
+        state.postPageInfo = pullCommentLike(
+          state.postPageInfo,
+          unLikedCommentId,
+          user
+        );
       })
       .addCase(commentDisLikeAsync.rejected, (state, action) => {
         toast.error(action.error.message);
       })
+      .addCase(fetchReelsAsync.pending, (state) => {
+        state.reelsStatus = "pending";
+      })
+      .addCase(fetchReelsAsync.fulfilled, (state, action) => {
+        const { totalResult, data } = action.payload;
+        state.reelsStatus = "success";
+        state.reels = data;
+        state.totalResult = totalResult;
+      })
+      .addCase(fetchReelsAsync.rejected, (state, action) => {
+        state.reelsStatus = "reject";
+        toast.error(action.error.message);
+      })
+      .addCase(fetchSearchResultsAsync.pending, (state) => {
+        state.searchStatus = "pending";
+      })
+      .addCase(fetchSearchResultsAsync.fulfilled, (state, action) => {
+        state.searchStatus = "success";
+        state.searchResults = action.payload.data;
+      })
+      .addCase(fetchSearchResultsAsync.rejected, (state, action) => {
+        toast.error(action.error.message);
+      });
   },
 });
 
@@ -227,6 +360,12 @@ export const {
   setActive,
   postPageStatusToggle,
   resetPostPageInfo,
+  currentConversationStatusUpdate,
+  updateCurrentConversation,
+  recievedNewMessage,
+  fetchConversations,
+  selectExistingConversation,
+  sendingMessageStatusUpdate
 } = slice.actions;
 
 const handleUpdateFollowingList = (postUser) => {
