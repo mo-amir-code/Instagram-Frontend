@@ -8,7 +8,7 @@ const TextMessage = ({ message, incoming }) => {
     : "bg-blue-500 text-white float-right";
 
   return (
-    <div>
+    <div className="w-full" >
       <div
         className={`relative max-w-md mx-2 my-2 px-4 py-2 ${
           incoming ? "rounded-r-lg" : "rounded-l-lg"
@@ -38,7 +38,7 @@ const ImageMessage = ({ message, incoming }) => {
     : "bg-blue-500 text-white float-right";
 
   return (
-    <div>
+    <div className="w-full" >
       <div
         className={`relative max-w-[15rem] mx-2 my-2 px-4 py-2 ${
           incoming ? "rounded-r-lg" : "rounded-l-lg"
@@ -84,7 +84,7 @@ const VideoMessage = ({ message, incoming }) => {
   };
 
   return (
-    <div>
+    <div className="w-full" >
       <div
         className={`relative max-w-md mx-2 my-2 px-4 py-2 ${
           incoming ? "rounded-r-lg" : "rounded-l-lg"
@@ -112,7 +112,7 @@ const VideoMessage = ({ message, incoming }) => {
 
 const MessageProgressBar = () => {
   return (
-    <div>
+    <div className="w-full" >
       <div
         className={`relative max-w-md mx-2 my-2 px-4 py-2 rounded-l-lg rounded-t-lg shadow-lg float-right`}
       >

@@ -4,8 +4,7 @@ const SOCKET_ENDPOINT = "https://instagram-backend-w2k6.onrender.com/";
 let socket;
 
 const connectSocket = (userId) => {
-  socket = io(SOCKET_ENDPOINT, {query: `userId=${userId}`,
-  });
+  socket = io(SOCKET_ENDPOINT, { query: `userId=${userId}` });
 
   console.log("connection");
 

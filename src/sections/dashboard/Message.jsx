@@ -5,6 +5,7 @@ import Tabs from "../../components/message/Tabs";
 import Chat from "../../components/message/Chat";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  currentConversationStatusUpdate,
   fetchConversations,
   selectExistingConversation,
   setPrimaryGeneralConvs,
@@ -48,6 +49,7 @@ const Message = ({ setOpenModal }) => {
   }, [conversations]);
 
   const handleClick = ({ id, userId }) => {
+    dispatch(currentConversationStatusUpdate("pending"));
     socket.emit("select-existing-conversation", { id, userId }, (data) => {
       dispatch(selectExistingConversation(data));
     });

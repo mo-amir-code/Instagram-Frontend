@@ -107,6 +107,7 @@ const Profile = () => {
       userId: unknownUserInfo.id,
       loggedInUserId,
     };
+    dispatch(currentConversationStatusUpdate("pending"));
     handleStartChat(actions, data);
     dispatch(setNavModal("messages"));
     navigate("/direct/inbox");

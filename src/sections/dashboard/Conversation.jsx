@@ -2,12 +2,10 @@ import React, { useRef } from "react";
 import {
   ImageSquare,
   Info,
-  Microphone,
   Phone,
   Smiley,
   VideoCamera,
 } from "@phosphor-icons/react";
-import { faker } from "@faker-js/faker";
 import EmojiPickerModal from "../../components/createposts/EmojiPickerModal";
 import { useState } from "react";
 import AudioRecord from "../../components/conversation/AudioRecord";
@@ -36,6 +34,7 @@ const Conversation = ({ conversationId, user }) => {
   const [audioChunks, setAudioChunks] = useState([]);
   const [audioURL, setAudioURL] = useState(null);
   const mediaRef = useRef(null);
+  const messageRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loggedInUserId } = useSelector((state) => state.auth);
@@ -57,6 +56,12 @@ const Conversation = ({ conversationId, user }) => {
       audioElement.load();
     }
   }, [audioURL]);
+
+  useEffect(() => {
+    if (messageRef.current) {
+      messageRef.current.scrollTop = messageRef.current.scrollHeight;
+    }
+  }, [currentConversation, messageRef.current]);
 
   const handleSendMessage = () => {
     const data = {
@@ -127,7 +132,10 @@ const Conversation = ({ conversationId, user }) => {
       {/* End header */}
 
       {/* Conversation */}
-      <div className="flex-grow p-5 flex flex-col h-64 overflow-auto">
+      <section
+        className="flex-grow p-5 flex flex-col h-64 overflow-auto"
+        ref={messageRef}
+      >
         {currentConversation.map((conv) => {
           switch (conv.type) {
             case "text":
@@ -145,7 +153,7 @@ const Conversation = ({ conversationId, user }) => {
           }
         })}
         {sendingMessageStatus === "pending" && <MessageProgressBar />}
-      </div>
+      </section>
       {/* End conversation */}
 
       {/* Footer */}
