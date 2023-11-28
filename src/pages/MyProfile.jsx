@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { faker } from "@faker-js/faker";
 import { GearSix } from "@phosphor-icons/react";
 import Highlight from "../components/myprofile/Highlight";
 import CreateHighlight from "../components/myprofile/CreateHighlight";
@@ -18,7 +17,7 @@ import SavedPosts from "../components/profiles/SavedPosts";
 const MyProfile = () => {
   const [mediaTab, setMediaTab] = useState(1);
   const { loggedInUserId } = useSelector((state) => state.auth);
-  const { userInfo, userAvatar } = useSelector((state) => state.user);
+  const { userInfo, userAvatar, status } = useSelector((state) => state.user);
   const { myUserPosts, myUserSaved } = useSelector((state) => state.app);
   const [editProfile, setEditProfile] = useState(false);
   const dispatch = useDispatch();
@@ -30,7 +29,7 @@ const MyProfile = () => {
     dispatch(fetchMyUserPostAsync(loggedInUserId));
   }, []);
 
-  if (!userInfo) {
+  if (status === "pending" || !userInfo) {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <ProfileLoader />
@@ -53,7 +52,7 @@ const MyProfile = () => {
 
               <div className="flex-[0.66] space-y-5">
                 <div className="flex items-center justify-start">
-                  <h1 className="text-lg font-medium">{userInfo.username}</h1>
+                  <h1 className="text-lg font-medium">{userInfo?.username}</h1>
 
                   <div className="flex items-center space-x-3 pl-16">
                     <EditProfileButton setEditProfile={setEditProfile} />
@@ -64,20 +63,22 @@ const MyProfile = () => {
 
                 <div>
                   <div className="flex items-center space-x-6 font-medium">
-                    <h4>{userInfo.posts} posts</h4>
-                    <h4>{userInfo.followers.length} followers</h4>
-                    <h4>{userInfo.following.length} following</h4>
+                    <h4>{userInfo?.posts} posts</h4>
+                    <h4>{userInfo?.followers.length} followers</h4>
+                    <h4>{userInfo?.following.length} following</h4>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="text-xs font-bold">
-                    <h2>{userInfo.name}</h2>
+                    <h2>{userInfo?.name}</h2>
                   </div>
 
                   <div className="text-sm">
-                    <h4 className="text-text-secondary">{userInfo.category}</h4>
-                    <p>{userInfo.bio}</p>
+                    <h4 className="text-text-secondary">
+                      {userInfo?.category}
+                    </h4>
+                    <p>{userInfo?.bio}</p>
                     {/* <p className="mt-2 font-semibold">
                   79 accounts reached in the last 30 days. View insights
                 </p> */}
