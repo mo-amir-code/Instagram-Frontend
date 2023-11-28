@@ -24,7 +24,9 @@ const MyProfile = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchMyUserAsync(loggedInUserId));
+    if (!userInfo) {
+      dispatch(fetchMyUserAsync(loggedInUserId));
+    }
     dispatch(fetchMyUserPostAsync(loggedInUserId));
   }, []);
 
