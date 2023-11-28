@@ -4,35 +4,54 @@ import { CaretDown, NotePencil } from "@phosphor-icons/react";
 import Tabs from "../../components/message/Tabs";
 import Chat from "../../components/message/Chat";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchConversations, selectExistingConversation } from "../../redux/features/app/appSlice";
+import {
+  fetchConversations,
+  selectExistingConversation,
+  setPrimaryGeneralConvs,
+} from "../../redux/features/app/appSlice";
 import { socket } from "../../socket";
 import toast from "react-hot-toast";
+import { filterConversations } from "../../services/appServices";
 
-const Message = () => {
+const Message = ({ setOpenModal }) => {
   const [conversationTab, setConversationTab] = useState(1);
-  const { username, loggedInUserId } = useSelector((state) => state.auth);
+  const { username, loggedInUserId, following } = useSelector(
+    (state) => state.auth
+  );
   const { directChat } = useSelector((state) => state.app);
-  const { conversations } = directChat;
+  const { conversations, primaryConversations, generalConversations } =
+    directChat;
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // console.log("datatttattata");
     socket?.emit("fetch-conversations", { loggedInUserId }, (data) => {
+      // console.log(data);/
       if (data.status) {
         toast.error(data.message);
       } else {
         dispatch(fetchConversations(data));
       }
     });
+
     return () => {
       socket?.off("fetch-conversations");
     };
   }, []);
 
-  const handleClick = ({id, userId}) => {
-    socket.emit("select-existing-conversation", {id, userId}, (data) => {
+  useEffect(() => {
+    // conversations filtering
+    if (conversations.length > 0) {
+      const convs = filterConversations(conversations, following);
+      dispatch(setPrimaryGeneralConvs(convs));
+    }
+  }, [conversations]);
+
+  const handleClick = ({ id, userId }) => {
+    socket.emit("select-existing-conversation", { id, userId }, (data) => {
       dispatch(selectExistingConversation(data));
-    })
-  }
+    });
+  };
 
   return (
     <section className="flex flex-col bg-bg-primary w-[400px] h-screen rounded-lg border-r border-hover-primary slideModal">
@@ -42,7 +61,9 @@ const Message = () => {
           <h4 className="text-xl font-bold">{username}</h4>
           <CaretDown />
         </div>
-        <IconButton children={<NotePencil size={28} />} />
+        <div onClick={() => setOpenModal(true)}>
+          <IconButton children={<NotePencil size={28} />} />
+        </div>
       </div>
 
       {/* Tabs */}
@@ -53,7 +74,18 @@ const Message = () => {
         {(() => {
           switch (conversationTab) {
             case 1:
-              return conversations.map((el, idx) => (
+              return primaryConversations.map((el, idx) => (
+                <Chat
+                  key={idx}
+                  {...el.user}
+                  convId={el.conversationId}
+                  unread={el.unread}
+                  convs={true}
+                  handleClick={handleClick}
+                />
+              ));
+            case 2:
+              return generalConversations.map((el, idx) => (
                 <Chat
                   key={idx}
                   {...el.user}
@@ -64,16 +96,7 @@ const Message = () => {
                 />
               ));
             default:
-              return conversations.map((el, idx) => (
-                <Chat
-                  key={idx}
-                  {...el.user}
-                  conversationId={el.conversationId}
-                  unread={el.unread}
-                  convs={true}
-                  handleClick={handleClick}
-                />
-              ));
+              return <></>;
           }
         })()}
       </section>

@@ -20,8 +20,13 @@ import {
   TextMessage,
   VideoMessage,
 } from "../../components/conversation/MessageTypes";
-import toast from "react-hot-toast";
-import { sendingMessageStatusUpdate } from "../../redux/features/app/appSlice";
+import {
+  sendingMessageStatusUpdate,
+  setActive,
+  setNavModal,
+} from "../../redux/features/app/appSlice";
+import { useNavigate } from "react-router-dom";
+import avatar from "../../assets/images/avatar.jpg";
 
 const Conversation = ({ conversationId, user }) => {
   const [inputText, setInputText] = useState("");
@@ -32,6 +37,7 @@ const Conversation = ({ conversationId, user }) => {
   const [audioURL, setAudioURL] = useState(null);
   const mediaRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loggedInUserId } = useSelector((state) => state.auth);
   const { directChat } = useSelector((state) => state.app);
   const { currentConversation, sendingMessageStatus } = directChat;
@@ -59,6 +65,7 @@ const Conversation = ({ conversationId, user }) => {
       message: inputText,
       toUserId: user.id,
       fromUserId: loggedInUserId,
+      loggedInUserId,
     };
     if (selectedFile) {
       if (selectedFile.type.split("/")[0] === "image") {
@@ -75,16 +82,29 @@ const Conversation = ({ conversationId, user }) => {
     setSelectedFile(null);
   };
 
+  const handleUserProfileView = () => {
+    navigate(`/${user.username}`);
+    dispatch(setNavModal(null));
+    dispatch(setActive(7));
+  };
+
   return (
     <div className="flex flex-col h-full w-full">
       {/* Header */}
       <div className="flex items-center justify-between text-text-primary p-4 border-b border-hover-primary">
         <div className="flex justify-start space-x-3">
           <div className="rounded-full overflow-hidden w-[45px] h-[45px]">
-            <img src={user.avatar} alt={user.username} width={"45px"} />
+            <img
+              src={user.avatar || avatar}
+              alt={user.username}
+              width={"45px"}
+            />
           </div>
           <div className="flex flex-col items-center justify-start">
-            <h4 className="text-sm font-medium text-start cursor-pointer">
+            <h4
+              onClick={() => handleUserProfileView()}
+              className="text-sm font-medium text-start cursor-pointer"
+            >
               {user.username}
             </h4>
             <p className="text-xs text-start w-full text-text-secondary mt-[2px]">

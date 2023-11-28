@@ -18,15 +18,18 @@ const Messages = () => {
   const [openNewMessageModal, setOpenNewMessageModal] = useState(false);
   const [newMessageSelected, setNewMessageSelected] = useState(null);
   const { directChat } = useSelector((state) => state.app);
+  const { loggedInUserId } = useSelector((state) => state.auth);
   const { currentConversationStatus, currentConversationUser } = directChat;
   const dispatch = useDispatch();
 
   useEffect(() => {
     socket?.on("recieved-new-message", (data) => {
       dispatch(recievedNewMessage(data));
+      // console.log(data);
       if (
         data.conversationId.toString() ===
-        currentConversationUser.conversationId.toString()
+          currentConversationUser?.conversationId.toString() &&
+        data.loggedInUserId.toString() !== loggedInUserId
       ) {
         socket.emit("mark-message-as-read", {
           convId: data.conversationId,
@@ -45,7 +48,7 @@ const Messages = () => {
 
   return (
     <div className="w-full h-full flex items-center justify-center relative">
-      <Message />
+      <Message setOpenModal={setOpenNewMessageModal} />
       <section className="flex-grow h-full">
         {currentConversationStatus === "success" ? (
           <Conversation {...currentConversationUser} />

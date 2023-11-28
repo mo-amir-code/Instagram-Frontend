@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchMyUser, fetchUser, updateMyUser } from "./userAPI";
+import {
+  fetchFeatureUsers,
+  fetchMyUser,
+  fetchUser,
+  updateMyUser,
+} from "./userAPI";
 import toast from "react-hot-toast";
 
 const initialState = {
@@ -9,6 +14,7 @@ const initialState = {
   unknownUserInfo: null,
   unknownUserAvatar: null,
   unknownUserStatus: null,
+  featureUsers: [],
 };
 
 export const fetchMyUserAsync = createAsyncThunk(
@@ -31,6 +37,14 @@ export const fetchUserAsync = createAsyncThunk(
   "user/fetchUser",
   async (username) => {
     const response = await fetchUser(username);
+    return response;
+  }
+);
+
+export const fetchFeatureUsersAsync = createAsyncThunk(
+  "user/fetchFeatureUsers",
+  async () => {
+    const response = await fetchFeatureUsers();
     return response;
   }
 );
@@ -77,6 +91,12 @@ const slice = createSlice({
       })
       .addCase(fetchUserAsync.rejected, (state, action) => {
         state.unknownUserStatus = "error";
+        toast.error(action.error.message);
+      })
+      .addCase(fetchFeatureUsersAsync.fulfilled, (state, action) => {
+        state.featureUsers = action.payload.data;
+      })
+      .addCase(fetchFeatureUsersAsync.rejected, (state, action) => {
         toast.error(action.error.message);
       });
   },

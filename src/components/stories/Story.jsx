@@ -11,7 +11,7 @@ const Story = () => {
       <div className="flex justify-center items-center rounded-full overflow-hidden w-[60px] h-[60px]">
         <img
           src={faker.image.avatar()}
-          alt={faker.name.fullName()}
+          alt={faker.person.fullName()}
           width={"60px"}
         />
       </div>

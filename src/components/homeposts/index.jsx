@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
-import HomePostsLoader from "../loaders/HomePostsLoader";
 import { fetchPostsAsync } from "../../redux/features/app/appAsyncThunk";
 import PostUI from "./PostUI";
 
@@ -36,7 +35,7 @@ const index = () => {
           </div>
         }
       >
-        <div className="flex flex-col items-center w-full space-y-6 py-8">
+        <div className="flex flex-col items-center w-full space-y-6 py-8 scroll-smooth">
           {posts
             .slice(0)
             .reverse()

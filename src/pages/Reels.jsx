@@ -7,6 +7,8 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReelsAsync } from "../redux/features/app/appAsyncThunk";
 import ReelUI from "../components/reels/ReelUI";
+import HomePostsLoader from "../components/loaders/HomePostsLoader";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const settings = {
   dots: false,
@@ -45,21 +47,38 @@ const Reels = () => {
     }
   }, []);
 
+  const fetchData = () => {
+    dispatch(
+      fetchReelsAsync({ results: reels.length, totalResult: totalReels })
+    );
+  };
+
   return (
-    <div onWheel={handleWheel} className="w-full h-full space-y-3">
-      {reelsStatus ? (
-        <Slider {...settings} ref={sliderRef}>
-          {reels
-            .slice(0)
-            .reverse()
-            .map((reel) => (
-              <Reel key={reel} {...reel} />
-            ))}
-        </Slider>
-      ) : (
-        <ReelUI />
-      )}
-    </div>
+    <InfiniteScroll
+      dataLength={reels.length} //This is important field to render the next data
+      next={fetchData}
+      hasMore={reels.length != totalReels}
+      loader={
+        <div className="flex items-center justify-center w-full py-8">
+          <HomePostsLoader />
+        </div>
+      }
+    >
+      <div onWheel={handleWheel} className="w-full h-full space-y-3">
+        {reelsStatus ? (
+          <Slider {...settings} ref={sliderRef}>
+            {reels
+              .slice(0)
+              .reverse()
+              .map((reel) => (
+                <Reel key={reel} {...reel} />
+              ))}
+          </Slider>
+        ) : (
+          <ReelUI />
+        )}
+      </div>
+    </InfiniteScroll>
   );
 };
 

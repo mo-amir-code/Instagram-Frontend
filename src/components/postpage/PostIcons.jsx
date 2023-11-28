@@ -16,6 +16,7 @@ import {
   removeSavedPostAsync,
   savePostAsync,
 } from "../../redux/features/app/appAsyncThunk";
+import { socket } from "../../socket";
 
 const PostIcons = () => {
   const [isSaved, setIsSaved] = useState(false);
@@ -40,6 +41,10 @@ const PostIcons = () => {
         data.type = "reel";
       }
       dispatch(likePostAsync(data));
+      socket.emit("send-notification", {
+        type: "like",
+        userId: postPageInfo.user._id,
+      });
       setLiked(true);
     } else {
       toast.error("Login your account");

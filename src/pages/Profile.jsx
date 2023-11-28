@@ -9,7 +9,7 @@ import FollowingButton from "../components/buttons/FollowingButton";
 import UserRecommendation from "../components/buttons/UserRecommendation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchUserAsync } from "../redux/features/user/userSlice";
 import ProfileLoader from "../components/loaders/ProfileLoader";
 import {
@@ -24,10 +24,20 @@ import {
   updateFollowing,
 } from "../redux/features/Auth/authSlice";
 import MessageButton from "../components/buttons/MessageButton";
+import { handleStartChat } from "../services/socket";
+import { socket } from "../socket";
+import {
+  setNavModal,
+  currentConversationStatusUpdate,
+  updateCurrentConversation,
+} from "../redux/features/app/appSlice";
+import avatar from "../assets/images/avatar.jpg";
+import NoPosts from "../components/profiles/NoPosts";
 
 const Profile = () => {
   const [follow, setFollow] = useState(false);
   const [mediaTab, setMediaTab] = useState(1);
+  const navigate = useNavigate();
   const { unknownUserStatus, unknownUserInfo, unknownUserAvatar } = useSelector(
     (state) => state.user
   );
@@ -44,7 +54,7 @@ const Profile = () => {
       dispatch(fetchUserPostAsync(profile));
     }
     detectFollow(following, unknownUserInfo?.id, setFollow);
-  }, []);
+  }, [unknownUserInfo]);
 
   useEffect(() => {
     if (unknownUserInfo) {
@@ -86,6 +96,22 @@ const Profile = () => {
     dispatch(unFollowingUser(unknownUserInfo.id));
   };
 
+  const handleMessage = () => {
+    const actions = {
+      dispatch,
+      currentConversationStatusUpdate,
+      socket,
+      updateCurrentConversation,
+    };
+    const data = {
+      userId: unknownUserInfo.id,
+      loggedInUserId,
+    };
+    handleStartChat(actions, data);
+    dispatch(setNavModal("messages"));
+    navigate("/direct/inbox");
+  };
+
   return (
     <div className="text-text-primary">
       <div className="py-8 px-8 space-y-8">
@@ -94,7 +120,7 @@ const Profile = () => {
           <div className="flex justify-center items-center flex-[0.34] py-8">
             <div className="rounded-full overflow-hidden border-r border-hover-primary">
               <img
-                src={unknownUserAvatar}
+                src={unknownUserAvatar || avatar}
                 alt={unknownUserInfo.username}
                 width={160}
               />
@@ -114,7 +140,7 @@ const Profile = () => {
                   ) : (
                     <FollowingButton handleUnFollowUser={handleUnFollowUser} />
                   )}
-                  <MessageButton/>
+                  <MessageButton handleMessage={handleMessage} />
                   <UserRecommendation />
                   <DotsThree size={30} />
                 </div>
@@ -158,19 +184,38 @@ const Profile = () => {
         {/* Media section */}
         <section className="border-t border-hover-primary">
           <div className="flex items-center justify-center">
-            <MediaTab selected={mediaTab} setSelected={setMediaTab} type={"profile"} />
+            <MediaTab
+              selected={mediaTab}
+              setSelected={setMediaTab}
+              type={"profile"}
+            />
           </div>
         </section>
 
         {/* Posts Section */}
         <section>
-          <div className="grid grid-cols-3 gap-1">
+          <div
+            className={`${
+              userPosts.length > 0 ? "grid grid-cols-3 gap-1" : ""
+            }`}
+          >
             {(() => {
               switch (mediaTab) {
                 case 1:
-                  return userPosts.map((el, idx) => <Post key={idx} {...el} />);
+                  return userPosts.length > 0 ? (
+                    userPosts.map((el, idx) => <Post key={idx} {...el} />)
+                  ) : (
+                    <NoPosts message={"No Posts Yet"} />
+                  );
                 case 2:
-                  return userPosts.filter((el)=>el.type !== "post").map((el, idx) => <Post key={idx} {...el} />);
+                  return userPosts.filter((el) => el.type !== "post").length >
+                    0 ? (
+                    userPosts
+                      .filter((el) => el.type !== "post")
+                      .map((el, idx) => <Post key={idx} {...el} />)
+                  ) : (
+                    <NoPosts message={"No Reels Yet"} />
+                  );
                 default:
                   return;
               }

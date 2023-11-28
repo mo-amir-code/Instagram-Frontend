@@ -8,6 +8,7 @@ const initialState = {
   isLoggedIn: false,
   loggedInUserId: undefined,
   username: null,
+  name: null,
   avatar: null,
   following: [],
 };
@@ -59,12 +60,14 @@ const slice = createSlice({
         state.loginStatus = "pending";
       })
       .addCase(verifyAsync.fulfilled, (state, action) => {
-        const { userId, following, username, message, avatar } = action.payload;
+        const { userId, following, username, message, avatar, name } =
+          action.payload;
         state.loginStatus = "success";
         state.isLoggedIn = true;
         state.loggedInUserId = userId;
         state.following = following;
         state.username = username;
+        state.name = name;
         state.avatar = avatar;
         toast.success(message);
         removeLocalStorage("email");
@@ -77,12 +80,14 @@ const slice = createSlice({
         state.loginStatus = "pending";
       })
       .addCase(signinAsync.fulfilled, (state, action) => {
-        const { userId, following, username, avatar, message } = action.payload;
+        const { userId, following, username, avatar, message, name } =
+          action.payload;
         state.loginStatus = "success";
         state.isLoggedIn = true;
         state.loggedInUserId = userId;
         state.following = following;
         state.username = username;
+        state.name = name;
         state.avatar = avatar;
         toast.success(message);
       })

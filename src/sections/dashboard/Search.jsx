@@ -8,6 +8,7 @@ import { fetchSearchResultsAsync } from "../../redux/features/app/appAsyncThunk"
 const Search = () => {
   const [searching, setSearching] = useState(null);
   const { searchResults, searchStatus } = useSelector((state) => state.app);
+  const { loggedInUserId } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -47,11 +48,19 @@ const Search = () => {
       </div>
 
       {/* Searched results */}
-      <div className="flex flex-col overflow-y-auto ">
-        {searchResults.map((el, idx) => (
-          <SearchedResult key={idx} {...el} />
-        ))}
-      </div>
+      {searchResults.length > 0 ? (
+        <div className="flex flex-col overflow-y-auto ">
+          {searchResults
+            .filter((r) => r.id !== loggedInUserId)
+            .map((el, idx) => (
+              <SearchedResult key={idx} {...el} />
+            ))}
+        </div>
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-text-secondary">
+          <p className="text-sm font-medium">No recent searches</p>
+        </div>
+      )}
     </section>
   );
 };

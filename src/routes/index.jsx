@@ -14,6 +14,7 @@ import Reels from "../pages/Reels";
 import Messages from "../pages/Messages";
 import { useEffect } from "react";
 import { connectSocket } from "../socket";
+import StoryCanvasPage from "../pages/StoryCanvas";
 
 const router = () => {
   const { isLoggedIn, loggedInUserId } = useSelector((state) => state.auth);
@@ -40,6 +41,10 @@ const router = () => {
         {
           path: "explore",
           element: <Explore />,
+        },
+        {
+          path: "create/story",
+          element: <StoryCanvasPage />,
         },
         {
           path: "reels",

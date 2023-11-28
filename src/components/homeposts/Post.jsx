@@ -34,12 +34,16 @@ import {
 import {
   postPageStatusToggle,
   resetPostPageInfo,
+  setActive,
+  setNavModal,
 } from "../../redux/features/app/appSlice";
 import { useNavigate } from "react-router-dom";
 import {
   unFollowingUser,
   updateFollowing,
 } from "../../redux/features/Auth/authSlice";
+import avatar from "../../assets/images/avatar.jpg";
+import { socket } from "../../socket";
 
 const Post = ({
   _id,
@@ -106,6 +110,10 @@ const Post = ({
         data.type = "reel";
       }
       dispatch(likePostAsync(data));
+      socket.emit("send-notification", {
+        type: "like",
+        userId: user._id,
+      });
       setLiked(true);
     } else {
       toast.error("Login your account");
@@ -114,7 +122,15 @@ const Post = ({
 
   const handleRemoveLike = () => {
     if (loginStatus === "success") {
-      dispatch(removeLikedPostAsync({ postId: _id, userId: loggedInUserId }));
+      const data = {
+        postId: _id,
+        userId: loggedInUserId,
+        type: "post",
+      };
+      if (type === "reel") {
+        data.type = "reel";
+      }
+      dispatch(removeLikedPostAsync(data));
       setLiked(false);
     } else {
       toast.error("Login your account");
@@ -208,7 +224,9 @@ const Post = ({
   };
 
   const handleUserProfile = () => {
-    navigate(`${user.username}`);
+    navigate(`/${user.username}`);
+    dispatch(setNavModal(null));
+    dispatch(setActive(7));
   };
 
   const handleMute = () => {
@@ -239,7 +257,7 @@ const Post = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-start space-x-3">
           <div className="rounded-full overflow-hidden w-[35px] h-[35px]">
-            <img src={user.avatar} alt={user.name} width={"35px"} />
+            <img src={user.avatar || avatar} alt={user.name} width={"35px"} />
           </div>
           <div className="flex flex-col items-center justify-start">
             <h4 className="text-sm font-medium">

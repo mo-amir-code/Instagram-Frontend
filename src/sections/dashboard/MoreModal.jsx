@@ -39,9 +39,8 @@ const MoreModal = ({ setModal }) => {
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    dispatch(logoutUser()).then(() => {
-      navigate("/");
-    });
+    dispatch(logoutUser());
+    navigate("/auth/signin");
   };
 
   return (

@@ -19,14 +19,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setActive,
   setNavModal,
+  toggleIsNewNotification,
   toggleNewPostModal,
 } from "../redux/features/app/appSlice";
 import toast from "react-hot-toast";
+import NtfAlert from "../components/notifcations/NtfAlert";
+import { useEffect } from "react";
+import { fetchNotificationsCountAsync } from "../redux/features/app/appAsyncThunk";
 
 const Sidebar = ({ pcNavModal }) => {
   const [openMoreModal, setOpenMoreModal] = useState(false);
   const { active } = useSelector((state) => state.app);
-  const { isLoggedIn, username } = useSelector((state) => state.auth);
+  const { isLoggedIn, username, loggedInUserId } = useSelector(
+    (state) => state.auth
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -162,6 +168,15 @@ const Sidebar = ({ pcNavModal }) => {
     }
   };
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchNotificationsCountAsync({ userId: loggedInUserId }));
+      setTimeout(()=>{
+        dispatch(toggleIsNewNotification())
+      }, 2500)
+    }
+  }, []);
+
   return (
     <>
       <section
@@ -188,13 +203,16 @@ const Sidebar = ({ pcNavModal }) => {
               <div
                 key={idx}
                 onClick={() => handleNavbar(idx)}
-                className="flex group items-center hover:bg-hover-primary py-[11px] mr-[8px] pl-[8px] text-text-primary font-medium space-x-[16px] rounded-lg cursor-pointer transition duration-300"
+                className={`flex ${
+                  idx === 5 ? "relative" : null
+                } group items-center hover:bg-hover-primary py-[11px] mr-[8px] pl-[8px] text-text-primary font-medium space-x-[16px] rounded-lg cursor-pointer transition duration-300`}
               >
                 <div className="flex items-center space-x-2">
                   {active === idx && !pcNavModal && <Dot />}
                   {el.icon}
                 </div>
                 {!pcNavModal && <h4>{el.title}</h4>}
+                {idx === 5 && <NtfAlert />}
               </div>
             ))}
           </div>

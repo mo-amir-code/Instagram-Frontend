@@ -15,6 +15,7 @@ import {
 import { detectFollow } from "../../services/appServices";
 import { Link } from "react-router-dom";
 import ReelUI from "./ReelUI";
+import avatar from "../../assets/images/avatar.jpg"
 
 const Video = ({ file, user, description }) => {
   const [isPlay, setIsPlay] = useState(null);
@@ -51,7 +52,7 @@ const Video = ({ file, user, description }) => {
           }
         });
       },
-      { threshold: 0.2 } // Adjust the threshold as needed
+      { threshold: 0.4 } // Adjust the threshold as needed
     );
 
     if (targetRef.current) {
@@ -137,7 +138,7 @@ const VideoDetails = ({ user, description }) => {
       <div className="text-text-primary space-y-4">
         <div className="flex items-center justify-start space-x-3">
           <div className="rounded-full overflow-hidden w-[35px] h-[35px]">
-            <img src={user?.avatar} alt={user?.username} width={"35px"} />
+            <img src={user?.avatar || avatar} alt={user?.username} width={"35px"} />
           </div>
           <div className="flex flex-col items-center justify-start">
             <h4 className="text-sm font-medium space-x-1">

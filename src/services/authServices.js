@@ -3,6 +3,7 @@ export const getLSItem = (name) => {
 }
 
 export const filterfollowing = (following, user) => {
-    const filteredFollowing = following.filter((el)=> el.toString() !== user.toString());
+    const newFollowing = JSON.parse(JSON.stringify(following))
+    const filteredFollowing = newFollowing.filter((el)=> el !== user);
     return filteredFollowing;
 }

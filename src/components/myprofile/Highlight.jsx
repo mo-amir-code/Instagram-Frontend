@@ -14,7 +14,7 @@ const Highlight = () => {
         <div className="flex justify-center items-center rounded-full overflow-hidden w-[80px] h-[80px]">
           <img
             src={faker.image.avatar()}
-            alt={faker.name.fullName()}
+            alt={faker.person.fullName()}
             width={"80px"}
           />
         </div>

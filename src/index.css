@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Alatsi&family=Anton&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 
 @layer utilities {
@@ -19,6 +21,16 @@
       /* Firefox */
     }
   }
+}
+
+
+.arrow-left {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+
+  border-right: 10px solid #DC2626;
 }
 
 ::-webkit-scrollbar {
@@ -157,149 +169,201 @@ body {
   }
 }
 
-.likedPost{
+.likedPost {
   animation: likeAnimation 0.5s ease-in-out;
 }
 
 @keyframes likeAnimation {
-  0%{
+  0% {
     transform: translateY(0%);
   }
-  25%{
+
+  25% {
     transform: translateY(-25%);
   }
-  60%{
+
+  60% {
     transform: translateY(0%);
   }
-  75%{
+
+  75% {
     transform: translateY(-25%);
   }
-  90%{
+
+  90% {
     transform: translateY(0%);
   }
-  95%{
+
+  95% {
     transform: translateY(-15%);
   }
-  100%{
+
+  100% {
     transform: translateY(0%);
   }
 }
 
-.playIn{
+.playIn {
   transform: scale(1);
   animation: playIn 0.5s ease-in-out;
 }
 
 @keyframes playIn {
-  0%{
+  0% {
     transform: scale(0);
   }
-  100%{
+
+  100% {
     transform: scale(1);
   }
 }
 
-.playOut{
+.playOut {
   transform: scale(0);
   animation: playOut 0.5s ease-in-out;
 }
 
 @keyframes playOut {
-  0%{
+  0% {
     transform: scale(1);
   }
-  100%{
+
+  100% {
     transform: scale(0);
   }
 }
 
-.playBgIn{
+.playBgIn {
   opacity: 1;
   animation: playBgIn 0.5s ease-in-out;
 }
 
 @keyframes playBgIn {
-  0%{
+  0% {
     opacity: 0;
   }
-  100%{
+
+  100% {
     opacity: 1;
   }
 }
 
-.playBgOut{
+.playBgOut {
   opacity: 0;
   animation: playBgOut 0.5s ease-in-out;
 }
 
 @keyframes playBgOut {
-  0%{
+  0% {
     opacity: 1;
   }
-  100%{
+
+  100% {
     opacity: 0;
   }
 }
 
-.videoShadow{
+.videoShadow {
   box-shadow: 0px 0px 1000px rgba(234, 108, 108, 0.126);
 }
 
+.storyShadow {
+  box-shadow: 0px 0px 500px rgba(234, 108, 108, 0.228);
+}
 
-.uiEffect{
+
+.uiEffect {
   animation: uiAni 2s ease-in-out infinite;
 }
 
 @keyframes uiAni {
-  0%{
+  0% {
     opacity: 0.4;
   }
-  50%{
+
+  50% {
     opacity: 1;
   }
-  100%{
+
+  100% {
     opacity: 0.4;
   }
 }
 
 
-.triangle_topLeft{
+.triangle_topLeft {
   width: 0;
   height: 0;
   border-top: 100px solid blue;
   border-right: 100px solid transparent;
 }
 
-.scaleIn{
+.scaleIn {
   transform: scale(1);
   animation: scaleInAni 0.2s ease-in-out;
 }
 
 @keyframes scaleInAni {
-  0%{
+  0% {
     transform: scale(0);
   }
-  100%{
+
+  100% {
     transform: scale(1);
   }
 }
 
-.scaleOut{
+.scaleOut {
   transform: scale(0);
   animation: scaleOutAni 0.2s ease-in-out;
 }
 
 @keyframes scaleOutAni {
-  0%{
+  0% {
     transform: scale(1);
   }
-  100%{
+
+  100% {
     transform: scale(0);
   }
 }
 
 
+.ntfIn {
+  opacity: 1;
+  animation: ntfInAni 0.5s ease-in;
+}
 
+
+@keyframes ntfInAni {
+  0% {
+    opacity: 0;
+    transform: translateX(-25%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ntfOut {
+  opacity: 0;
+  animation: ntfOutAni 0.5s ease-out;
+}
+
+
+@keyframes ntfOutAni {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-25%);
+  }
+}
 
 
 

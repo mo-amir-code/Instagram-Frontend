@@ -19,7 +19,7 @@ const Reel = ({_id, file, likes, comments, description }) => {
   };
 
   return (
-    <div onClick={()=>handlePostView()} className="row-span-2 relative group cursor-pointer slideModalUpToDown">
+    <div onClick={()=>handlePostView()} className="row-span-2 relative group flex justify-center items-center cursor-pointer slideModalUpToDown">
       <video className="object-cover" autoPlay loop muted>
         <source src={file} />
       </video>

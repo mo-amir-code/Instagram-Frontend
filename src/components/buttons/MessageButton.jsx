@@ -1,8 +1,8 @@
 import React from "react";
 
-const MessageButton = ({handleUnFollowUser}) => {
+const MessageButton = ({handleMessage}) => {
   return (
-    <button onClick={()=>handleUnFollowUser()} className="bg-profile-button-bg flex items-center rounded-lg text-text-primary text-sm font-semibold py-2 px-3">
+    <button onClick={()=>handleMessage()} className="bg-profile-button-bg flex items-center rounded-lg text-text-primary text-sm font-semibold py-2 px-3">
       <span className="mr-1">Message</span>
     </button>
   );

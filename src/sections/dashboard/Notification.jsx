@@ -1,10 +1,42 @@
+import React, { useEffect, useState } from "react";
 import { BellRinging } from "@phosphor-icons/react";
-import React from "react";
-import TodayNtf from "../../components/notifcations/TodayNtf";
-import ThisWeek from "../../components/notifcations/ThisWeek";
-import ThisMonth from "../../components/notifcations/ThisMonth";
+import NtfBody from "../../components/notifcations/NtfBody";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNotificationsAsync } from "../../redux/features/app/appAsyncThunk";
+import { filterNotifications } from "../../services/appServices";
 
 const Notification = () => {
+  const [todayNotification, setTodayNotification] = useState([]);
+  const [weekNotification, setWeekNotification] = useState([]);
+  const [monthNotification, setMonthNotification] = useState([]);
+  const [yearNotification, setYearNotification] = useState([]);
+  const { loggedInUserId, isLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { notifications, notificationStatus } = useSelector(
+    (state) => state.app.notification
+  );
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchNotificationsAsync({ userId: loggedInUserId }));
+    }
+    const { today, week, month, year } = filterNotifications(notifications);
+    setTodayNotification(today);
+    setWeekNotification(week);
+    setMonthNotification(month);
+    setYearNotification(year);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn && notificationStatus !== "success") {
+      const { today, week, month, year } = filterNotifications(notifications);
+      setTodayNotification(today);
+      setWeekNotification(week);
+      setMonthNotification(month);
+      setYearNotification(year);
+    }
+  }, [notifications]);
+
   return (
     <section className="flex flex-col bg-bg-primary w-[400px] h-screen rounded-lg border-r border-hover-primary text-text-primary overflow-y-auto slideModal">
       {/* Header */}
@@ -14,10 +46,19 @@ const Notification = () => {
       </div>
 
       {/* Notifications */}
-      <div className="space-y-4" >
-        <TodayNtf />
-        <ThisWeek />
-        <ThisMonth/>
+      <div className="space-y-4">
+        {todayNotification.length > 0 && (
+          <NtfBody ntfs={todayNotification} forTime={"Today"} />
+        )}
+        {weekNotification.length > 0 && (
+          <NtfBody ntfs={weekNotification} forTime={"This week"} />
+        )}
+        {monthNotification.length > 0 && (
+          <NtfBody ntfs={monthNotification} forTime={"This month"} />
+        )}
+        {yearNotification.length > 0 && (
+          <NtfBody ntfs={yearNotification} forTime={"This year"} />
+        )}
       </div>
     </section>
   );

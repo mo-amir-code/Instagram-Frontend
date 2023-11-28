@@ -130,19 +130,27 @@ export const pushNewLike = (posts, postId, userId) => {
   const newPosts = posts;
   const postIndex = posts.findIndex((el) => el._id === postId);
   const post = posts.find((el) => el._id === postId);
-  post.likes.push(userId);
-  newPosts[postIndex] = post;
-  return newPosts;
+  if (post) {
+    post.likes.push(userId);
+    newPosts[postIndex] = post;
+    return newPosts;
+  } else {
+    return newPosts;
+  }
 };
 
 export const pullLike = (posts, postId, userId) => {
   const newPosts = posts;
   const postIndex = posts.findIndex((el) => el._id === postId);
   const post = posts.find((el) => el._id === postId);
-  const newLikes = post.likes.filter((el) => el !== userId);
-  post.likes = newLikes;
-  newPosts[postIndex] = post;
-  return newPosts;
+  if (post) {
+    const newLikes = post.likes.filter((el) => el !== userId);
+    post.likes = newLikes;
+    newPosts[postIndex] = post;
+    return newPosts;
+  } else {
+    return newPosts;
+  }
 };
 
 export const increamentPostCommentCount = (postId, posts) => {
@@ -296,4 +304,61 @@ export const resetUnreadConversation = (convs, currConv) => {
   );
   conversations[convIndex].unread = 0;
   return conversations;
+};
+
+export const filterConversations = (convs, following) => {
+  // console.log(convs, following);
+  const newConvs = JSON.parse(JSON.stringify(convs));
+  const newFollowing = JSON.parse(JSON.stringify(following));
+  const primaryConvs = newConvs.filter((conv) => {
+    const isConv = newFollowing.find((el) => el === conv.user.id);
+    if (isConv) {
+      return true;
+    }
+  });
+
+  const generalConvs = newConvs.filter((conv) => {
+    const isConv = newFollowing.find((el) => el === conv.user.id);
+    if (!isConv) {
+      return true;
+    }
+  });
+
+  // console.log(primaryConvs, generalConvs);
+
+  return { primaryConvs, generalConvs };
+};
+
+export const filterNotifications = (notifications) => {
+  const today = [];
+  const week = [];
+  const month = [];
+  const year = [];
+  const ntfs = [];
+  notifications.forEach((ntf) => {
+    const date = new Date(ntf.createdAt);
+    const currDate = new Date();
+    const timeDifference = currDate - date;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const monthes = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+
+    if (days == 0) {
+      today.push(ntf);
+    } else if (weeks == 0) {
+      week.push(ntf);
+    } else if (monthes == 0) {
+      month.push(ntf);
+    } else if (years == 0) {
+      year.push(ntf);
+    } else {
+      ntfs.push(ntf);
+    }
+  });
+
+  return { today, week, month, year, ntfs };
 };

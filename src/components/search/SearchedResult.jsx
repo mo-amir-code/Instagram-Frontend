@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setActive, setNavModal } from "../../redux/features/app/appSlice";
+import eAvatar from "../../assets/images/avatar.jpg"
 
 const SearchedResult = ({ id, name, username, avatar }) => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const SearchedResult = ({ id, name, username, avatar }) => {
     >
       <div className="flex justify-start space-x-3">
         <div className="rounded-full overflow-hidden w-[40px] h-[40px]">
-          <img src={avatar} alt={username} width={"40px"} />
+          <img src={avatar || eAvatar} alt={username} width={"40px"} />
         </div>
         <div className="flex flex-col items-center justify-start">
           <h4 className="text-sm font-medium text-start">{username}</h4>

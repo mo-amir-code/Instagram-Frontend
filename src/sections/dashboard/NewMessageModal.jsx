@@ -12,9 +12,13 @@ import {
   currentConversationStatusUpdate,
   updateCurrentConversation,
 } from "../../redux/features/app/appSlice";
-import toast from "react-hot-toast";
 
-export default function NewMessageModal({ open, setOpen, selected, setSelected }) {
+export default function NewMessageModal({
+  open,
+  setOpen,
+  selected,
+  setSelected,
+}) {
   const [inputText, setInputText] = useState("");
   const cancelButtonRef = useRef(null);
   const dispatch = useDispatch();
@@ -35,21 +39,17 @@ export default function NewMessageModal({ open, setOpen, selected, setSelected }
     setInputText(e.target.value);
   };
 
-  const handleStartChat = ({userId}) => {
+  const handleStartChat = ({ userId }) => {
     dispatch(currentConversationStatusUpdate("pending"));
-    socket.emit(
-      "start-conversation",
-      { userId, loggedInUserId },
-      (cbData) => {
-        if (cbData.status === "success") {
-          dispatch(updateCurrentConversation(cbData));
-        } else {
-          dispatch(currentConversationStatusUpdate("error"));
-        }
+    socket.emit("start-conversation", { userId, loggedInUserId }, (cbData) => {
+      if (cbData.status === "success") {
+        dispatch(updateCurrentConversation(cbData));
+      } else {
+        dispatch(currentConversationStatusUpdate("error"));
       }
-    );
+    });
     setOpen(false);
-    setSelected(null)
+    setSelected(null);
   };
 
   return (

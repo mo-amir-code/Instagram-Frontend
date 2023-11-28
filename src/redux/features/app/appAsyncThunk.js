@@ -18,6 +18,8 @@ import {
   newVideoPost,
   fetchReels,
   fetchSearchResults,
+  fetchNotificationsCount,
+  fetchNotifications,
 } from "./appAPI";
 
 export const newPostAsync = createAsyncThunk("app/newpost", async (data) => {
@@ -109,8 +111,8 @@ export const fetchPostInfoAsync = createAsyncThunk(
 
 export const fetchExplorePostsAsync = createAsyncThunk(
   "app/fetchExplorePosts",
-  async () => {
-    const response = await fetchExplorePosts();
+  async (data) => {
+    const response = await fetchExplorePosts(data);
     return response;
   }
 );
@@ -151,6 +153,22 @@ export const fetchSearchResultsAsync = createAsyncThunk(
   "app/fetchSearchResults",
   async (data) => {
     const response = await fetchSearchResults(data);
+    return response;
+  }
+);
+
+export const fetchNotificationsCountAsync = createAsyncThunk(
+  "app/fetchNotificationsCount",
+  async (data) => {
+    const response = await fetchNotificationsCount(data);
+    return response;
+  }
+);
+
+export const fetchNotificationsAsync = createAsyncThunk(
+  "app/fetchNotifications",
+  async (data) => {
+    const response = await fetchNotifications(data);
     return response;
   }
 );

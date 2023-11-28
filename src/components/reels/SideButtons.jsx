@@ -19,17 +19,19 @@ import {
   savePostAsync,
 } from "../../redux/features/app/appAsyncThunk";
 import toast from "react-hot-toast";
+import { socket } from "../../socket";
 
-const SideButtons = ({ _id, likes, comments, saved }) => {
+const SideButtons = ({ _id, likes, comments, saved, user }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [liked, setLiked] = useState(false);
   const { loggedInUserId, loginStatus } = useSelector((state) => state.auth);
+  const { reels } = useSelector((state) => state.app);
   const dispatch = useDispatch();
 
   useEffect(() => {
     detectLike(likes, loggedInUserId, setLiked);
     detectSave(saved, loggedInUserId, setIsSaved);
-  }, []);
+  }, [reels]);
 
   const handleLike = () => {
     if (loginStatus === "success") {
@@ -39,6 +41,10 @@ const SideButtons = ({ _id, likes, comments, saved }) => {
         type: "reel",
       };
       dispatch(likePostAsync(data));
+      socket.emit("send-notification", {
+        type: "like",
+        userId: user._id,
+      });
       setLiked(true);
     } else {
       toast.error("Login your account");
@@ -47,7 +53,13 @@ const SideButtons = ({ _id, likes, comments, saved }) => {
 
   const handleRemoveLike = () => {
     if (loginStatus === "success") {
-      dispatch(removeLikedPostAsync({ postId: _id, userId: loggedInUserId }));
+      dispatch(
+        removeLikedPostAsync({
+          postId: _id,
+          userId: loggedInUserId,
+          type: "reel",
+        })
+      );
       setLiked(false);
     } else {
       toast.error("Login your account");

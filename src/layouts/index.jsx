@@ -3,14 +3,34 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../pages/Sidebar";
 import Search from "../sections/dashboard/Search";
 import Notification from "../sections/dashboard/Notification";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NewPost from "../sections/dashboard/NewPost";
 import PostPage from "../pages/PostPage";
+import { useEffect } from "react";
+import { socket } from "../socket";
+import {
+  newNotificationRecieved,
+  toggleIsNewNotification,
+} from "../redux/features/app/appSlice";
 
 const index = () => {
   const { pcNavModal, newPostModal, postPageStatus } = useSelector(
     (state) => state.app
   );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket?.on("new-notification", ({ type }) => {
+      dispatch(newNotificationRecieved({ type }));
+      setTimeout(() => {
+        dispatch(toggleIsNewNotification());
+      }, 3000);
+    });
+
+    return () => {
+      socket?.off("new-notification");
+    };
+  });
 
   return (
     <>

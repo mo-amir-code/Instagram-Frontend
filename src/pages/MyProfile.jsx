@@ -9,16 +9,17 @@ import EditProfileButton from "../components/buttons/EditProfileButton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMyUserAsync } from "../redux/features/user/userSlice";
 import ProfileLoader from "../components/loaders/ProfileLoader";
-import IsLoggedInLoader from "../components/loaders/IsLoggedInLoader";
 import { fetchMyUserPostAsync } from "../redux/features/app/appAsyncThunk";
 import EditProfile from "./EditProfile";
-import MessageButton from "../components/buttons/MessageButton";
+import avatar from "../assets/images/avatar.jpg";
+import NoPosts from "../components/profiles/NoPosts";
+import SavedPosts from "../components/profiles/SavedPosts";
 
 const MyProfile = () => {
   const [mediaTab, setMediaTab] = useState(1);
   const { loggedInUserId } = useSelector((state) => state.auth);
   const { userInfo, userAvatar } = useSelector((state) => state.user);
-  const { myUserPosts } = useSelector((state) => state.app);
+  const { myUserPosts, myUserSaved } = useSelector((state) => state.app);
   const [editProfile, setEditProfile] = useState(false);
   const dispatch = useDispatch();
 
@@ -44,7 +45,7 @@ const MyProfile = () => {
             <section className="flex">
               <div className="flex justify-center items-center flex-[0.34] py-8">
                 <div className="rounded-full overflow-hidden border-r border-hover-primary w-[160px] h-[160px]">
-                  <img src={userAvatar} alt="" width={160} />
+                  <img src={userAvatar || avatar} alt="" width={160} />
                 </div>
               </div>
 
@@ -54,7 +55,7 @@ const MyProfile = () => {
 
                   <div className="flex items-center space-x-3 pl-16">
                     <EditProfileButton setEditProfile={setEditProfile} />
-                    <MessageButton />
+                    {/* <MessageButton /> */}
                     <GearSix size={30} />
                   </div>
                 </div>
@@ -104,19 +105,36 @@ const MyProfile = () => {
 
             {/* Posts Section */}
             <section>
-              <div className="grid grid-cols-3 gap-1">
+              <div
+                className={`${
+                  myUserPosts.length > 0 && mediaTab !== 3
+                    ? "grid grid-cols-3 gap-1"
+                    : ""
+                }`}
+              >
                 {(() => {
                   switch (mediaTab) {
                     case 1:
-                      return myUserPosts.map((el, idx) => (
-                        <Post key={idx} {...el} />
-                      ));
+                      return myUserPosts.length > 0 ? (
+                        myUserPosts.map((el, idx) => <Post key={idx} {...el} />)
+                      ) : (
+                        <NoPosts message={"Upload New Posts"} />
+                      );
                     case 2:
-                      return myUserPosts
-                        .filter((el) => el.type !== "post")
-                        .map((el, idx) => <Post key={idx} {...el} />);
+                      return myUserPosts.filter((el) => el.type !== "post")
+                        .length > 0 ? (
+                        myUserPosts
+                          .filter((el) => el.type !== "post")
+                          .map((el, idx) => <Post key={idx} {...el} />)
+                      ) : (
+                        <NoPosts message={"Upload New Reels"} />
+                      );
                     default:
-                      return;
+                      return myUserSaved.length > 0 ? (
+                        <SavedPosts myUserSaved={myUserSaved} />
+                      ) : (
+                        <NoPosts message={"No Saved Posts"} />
+                      );
                   }
                 })()}
               </div>

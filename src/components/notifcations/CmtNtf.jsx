@@ -12,7 +12,7 @@ const CmtNtf = () => {
         </div>
         <div className="flex flex-col items-center justify-start">
           <h4 className="text-sm font-medium text-start">
-            {faker.name.fullName()}{" "}
+            {faker.person.fullName()}{" "}
             <span className="font-normal">commented: 🔥🔥🔥🔥😍😍</span>
           </h4>
           <p className="text-xs text-start w-full text-text-secondary mt-[2px]">

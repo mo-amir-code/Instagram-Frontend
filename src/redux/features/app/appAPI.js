@@ -160,10 +160,12 @@ export const fetchPostInfo = (id) => {
   });
 };
 
-export const fetchExplorePosts = () => {
+export const fetchExplorePosts = (data) => {
   return new Promise(async (resolved, rejected) => {
     try {
-      const response = await httpAxios.get(`/app/fetch-explore`);
+      const response = await httpAxios.get(`/app/fetch-explore`, {
+        params: { ...data },
+      });
       resolved(response.data);
     } catch (err) {
       console.log(err.response.data.message);
@@ -214,6 +216,34 @@ export const fetchSearchResults = (data) => {
   return new Promise(async (resolved, rejected) => {
     try {
       const response = await httpAxios.get(`/app/fetch-search-results`, {
+        params: { ...data },
+      });
+      resolved(response.data);
+    } catch (err) {
+      console.log(err.response.data.message);
+      rejected(err.response.data);
+    }
+  });
+};
+
+export const fetchNotificationsCount = (data) => {
+  return new Promise(async (resolved, rejected) => {
+    try {
+      const response = await httpAxios.get(`/app/fetch-notifications-count`, {
+        params: { ...data },
+      });
+      resolved(response.data);
+    } catch (err) {
+      console.log(err.response.data.message);
+      rejected(err.response.data);
+    }
+  });
+};
+
+export const fetchNotifications = (data) => {
+  return new Promise(async (resolved, rejected) => {
+    try {
+      const response = await httpAxios.get(`/app/fetch-notifications`, {
         params: { ...data },
       });
       resolved(response.data);
