@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-const SOCKET_ENDPOINT = "http://localhost:8000";
+const SOCKET_ENDPOINT = "https://instagram-backend-w2k6.onrender.com/";
 let socket;
 
 const connectSocket = (userId) => {
