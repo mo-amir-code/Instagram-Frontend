@@ -25,7 +25,7 @@ const SideButtons = ({ _id, likes, comments, saved, user }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [liked, setLiked] = useState(false);
   const { loggedInUserId, loginStatus } = useSelector((state) => state.auth);
-  const { reels } = useSelector((state) => state.app);
+  const { reels, width } = useSelector((state) => state.app);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -98,14 +98,14 @@ const SideButtons = ({ _id, likes, comments, saved, user }) => {
   };
 
   return (
-    <div className="flex flex-col space-y-6 items-center justify-end text-text-primary max-h-[530px] h-full">
+    <div className="flex flex-col max-sm:-translate-x-[4.5rem] max-sm:-translate-y-4 space-y-6 items-center justify-end text-text-primary max-h-[530px] h-full">
       <div className="flex flex-col justify-center space-y-4">
         <div className="flex flex-col items-center justify-center space-y-2">
           {!liked ? (
             <Heart
-              size={28}
+              size={width > 640 ? 28 : 20}
               onClick={() => handleLike()}
-              className="cursor-pointer"
+              className="cursor-pointer drop-shadow-sm"
             />
           ) : (
             <img
@@ -123,13 +123,16 @@ const SideButtons = ({ _id, likes, comments, saved, user }) => {
         <div className="flex flex-col items-center justify-center space-y-2">
           <ChatCircle
             // onClick={() => handlePostView()}
-            size={28}
-            className="cursor-pointer"
+            size={width > 640 ? 28 : 20}
+            className="cursor-pointer drop-shadow-sm"
           />
           <span className="text-xs">{comments?.length || comments}</span>
         </div>
         <div className="flex flex-col items-center justify-center space-y-2">
-          <PaperPlaneTilt size={28} className="cursor-pointer" />
+          <PaperPlaneTilt
+            size={width > 640 ? 28 : 20}
+            className="cursor-pointer drop-shadow-sm"
+          />
           <span className="text-xs">{faker.number.int(1000)}</span>
         </div>
       </div>
@@ -137,8 +140,8 @@ const SideButtons = ({ _id, likes, comments, saved, user }) => {
         {!isSaved ? (
           <BookmarkSimple
             onClick={() => handleSavePost()}
-            size={30}
-            className="cursor-pointer"
+            size={width > 640 ? 30 : 20}
+            className="cursor-pointer drop-shadow-sm"
           />
         ) : (
           <div className=" w-[30px] h-[30px] flex items-center justify-center">
@@ -152,7 +155,10 @@ const SideButtons = ({ _id, likes, comments, saved, user }) => {
         )}
         <span className="text-xs">{saved?.length}</span>
       </div>
-      <DotsThree size={28} className="cursor-pointer" />
+      <DotsThree
+        size={width > 640 ? 28 : 20}
+        className="cursor-pointer drop-shadow-sm"
+      />
       <div className="rounded-md overflow-hidden border border-text-primary cursor-pointer">
         <img
           src={faker.image.avatar()}

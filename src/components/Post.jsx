@@ -23,7 +23,7 @@ function Post({ _id, file, likes, comments, description, type }) {
   return (
     <div
       onClick={() => handlePostView()}
-      className={`relative group cursor-pointer slideModalUpToDown overflow-hidden border border-text-secondary flex justify-center items-center responivePosts max-w-[20rem] max-h-[20rem]`}
+      className={`relative group cursor-pointer slideModalUpToDown overflow-hidden border border-text-secondary flex justify-center items-center max-w-[20rem] max-h-[20rem]`}
     >
       {type === "post" ? (
         <img src={file} alt={description} className="object-cover" />

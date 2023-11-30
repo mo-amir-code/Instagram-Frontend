@@ -2,7 +2,7 @@ import React from "react";
 
 const PostUI = () => {
   return (
-    <div className="w-[480px] uiEffect">
+    <div className="w-[480px] max-sm:w-[400px] max-[512px]:w-[350px] uiEffect">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-start">

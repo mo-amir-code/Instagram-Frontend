@@ -24,12 +24,17 @@ const SigninForm = () => {
     <div className="space-y-3">
       <LoginWIthGoogleButton />
       <Divider />
-      <form onSubmit={handleSubmit((data)=>onSubmit(data))} className="text-xs space-y-3">
+      <form
+        onSubmit={handleSubmit((data) => onSubmit(data))}
+        className="text-xs space-y-3"
+      >
         <div className="space-y-2">
           <input
             type="text"
             name="email"
-            {...register("email", { required: "Username or email is required" })}
+            {...register("email", {
+              required: "Username or email is required",
+            })}
             placeholder="username or email"
             className="py-2 px-1 w-full outline-none border border-hover-primary focus:border-text-link rounded-sm"
           />

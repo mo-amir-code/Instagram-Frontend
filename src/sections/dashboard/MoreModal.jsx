@@ -7,7 +7,7 @@ import {
   X,
 } from "@phosphor-icons/react";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/features/Auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -38,6 +38,8 @@ const MoreModal = ({ setModal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
   const handleLogOut = () => {
     dispatch(logoutUser());
     navigate("/auth/signin");
@@ -57,12 +59,21 @@ const MoreModal = ({ setModal }) => {
             </div>
           ))}
         </div>
-        <div
-          onClick={() => handleLogOut()}
-          className="mx-[8px] my-2 hover:bg-hover-primary p-4 text-text-primary font-medium text-sm rounded-lg cursor-pointer transition duration-300 "
-        >
-          Log out
-        </div>
+        {!isLoggedIn ? (
+          <div
+            onClick={() => navigate("/auth/signin")}
+            className="mx-[8px] my-2 hover:bg-hover-primary p-4 text-text-primary font-medium text-sm rounded-lg cursor-pointer transition duration-300 "
+          >
+            Log in
+          </div>
+        ) : (
+          <div
+            onClick={() => handleLogOut()}
+            className="mx-[8px] my-2 hover:bg-hover-primary p-4 text-text-primary font-medium text-sm rounded-lg cursor-pointer transition duration-300 "
+          >
+            Log out
+          </div>
+        )}
       </section>
       <button
         onClick={() => setModal(false)}

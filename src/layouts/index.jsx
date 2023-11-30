@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { socket } from "../socket";
 import {
   newNotificationRecieved,
+  setActive,
   toggleIsNewNotification,
   updateScreenWidthAndHeight,
 } from "../redux/features/app/appSlice";
@@ -40,6 +41,11 @@ const index = () => {
         height: window.innerHeight,
       })
     );
+
+    const path = window.location.pathname;
+    if (path === "/") {
+      dispatch(setActive(0));
+    }
   }, []);
 
   useEffect(() => {

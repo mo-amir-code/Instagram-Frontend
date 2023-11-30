@@ -3,7 +3,7 @@ import React from "react";
 import Highlight from "../components/myprofile/Highlight";
 import CreateHighlight from "../components/myprofile/CreateHighlight";
 import MediaTab from "../components/myprofile/MediaTab";
-import Post from "../components/Post";
+import Post from "../components/profiles/Post";
 import FollowButton from "../components/buttons/FollowButton";
 import FollowingButton from "../components/buttons/FollowingButton";
 import UserRecommendation from "../components/buttons/UserRecommendation";
@@ -292,7 +292,9 @@ const Profile = () => {
                   switch (mediaTab) {
                     case 1:
                       return userPosts.length > 0 ? (
-                        userPosts.map((el, idx) => <Post key={idx} {...el} postType="post" />)
+                        userPosts.map((el, idx) => (
+                          <Post key={idx} {...el} postType="post" />
+                        ))
                       ) : (
                         <NoPosts message={"Upload New Posts"} />
                       );
@@ -301,7 +303,9 @@ const Profile = () => {
                         .length > 0 ? (
                         userPosts
                           .filter((el) => el.type !== "post")
-                          .map((el, idx) => <Post key={idx} {...el} postType="reel" />)
+                          .map((el, idx) => (
+                            <Post key={idx} {...el} postType="reel" />
+                          ))
                       ) : (
                         <NoPosts message={"Upload New Reels"} />
                       );
