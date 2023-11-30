@@ -193,9 +193,12 @@ const MyProfile = () => {
                     myUserPosts.length > 0 && mediaTab !== 3
                       ? ` ${
                           myUserPosts.filter((el) => el.type !== "post")
-                            .length !== 0
+                            .length != 0
                             ? "grid"
-                            : null
+                            : myUserPosts.filter((el) => el.type === "post")
+                                .length > 0 &&
+                              mediaTab === 1 &&
+                              "grid"
                         } grid-cols-3 gap-1`
                       : null
                   } `}
