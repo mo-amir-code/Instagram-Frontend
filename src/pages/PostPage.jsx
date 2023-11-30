@@ -90,24 +90,24 @@ export default function PostPage({ open }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bg-primary text-left shadow-xl transition-all w-[85vw] h-[95vh] border border-hover-primary">
-                <div className="w-full h-full flex items-center justify-center text-text-primary">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bg-primary text-left shadow-xl transition-all w-[85vw] h-[95vh] max-h-[550px] max-w-[1100px] border border-hover-primary">
+                <div className="w-full h-full flex max-sm:flex-col max-sm:max-h-max items-center justify-center text-text-primary overflow-y-auto">
                   {/* post image/video */}
                   {postPageInfoStatus ? (
                     <>
-                      <div className="w-[45%] border-r border-hover-primary h-full flex items-center justify-center">
+                      <div className="w-[45%] max-sm:w-full border-r border-hover-primary h-auto flex items-center justify-center">
                         {postPageInfo.type === "post" ? (
                           <img
                             src={postPageInfo.file}
                             alt={postPageInfo.description}
-                            className="object-cover h-full"
+                            className="object-cover h-full max-sm:pt-96 max-[464px]:pt-72 max-[350px]:pt-56"
                           />
                         ) : (
-                          <div className="relative">
+                          <div className="relative max-sm:pt-64">
                             <video
                               ref={videoRef}
                               onClick={() => handlePlayToggle()}
-                              className="object-cover w-[300px] h-[534px]"
+                              className="object-cover w-[300px] max-sm:w-auto h-[534px]"
                               autoPlay
                               loop
                             >
@@ -143,7 +143,7 @@ export default function PostPage({ open }) {
                           </div>
                         )}
                       </div>
-                      <div className="w-[55%] flex flex-col h-full">
+                      <div className="w-[55%] max-sm:w-full flex flex-col h-full">
                         <Header user={postPageInfo.user} />
                         <Comments
                           description={postPageInfo.description}
