@@ -84,6 +84,9 @@ const initialState = {
   reelsStatus: null, // pending, success, reject
   searchResults: [],
   searchStatus: null, // pending, success
+  width: null,
+  height: null,
+  mobileMessage: true,
 };
 
 const slice = createSlice({
@@ -196,6 +199,14 @@ const slice = createSlice({
     },
     toggleIsNewNotification(state) {
       state.notification.isNewNotification = false;
+    },
+    updateScreenWidthAndHeight(state, action) {
+      const { width, height } = action.payload;
+      state.width = width;
+      state.height = height;
+    },
+    toggleMobileMessage(state, action) {
+      state.mobileMessage = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -440,6 +451,8 @@ export const {
   selectStoryFile,
   newNotificationRecieved,
   toggleIsNewNotification,
+  updateScreenWidthAndHeight,
+  toggleMobileMessage
 } = slice.actions;
 
 const handleUpdateFollowingList = (postUser) => {

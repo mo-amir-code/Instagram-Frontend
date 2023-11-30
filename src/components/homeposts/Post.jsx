@@ -253,7 +253,7 @@ const Post = ({
   };
 
   return (
-    <div className="w-[480px] flex flex-col text-white space-y-2 ">
+    <div className="w-[480px] max-sm:w-[400px] max-[512px]:w-[350px] flex flex-col text-white space-y-2 ">
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-start space-x-3">
           <div className="rounded-full overflow-hidden w-[35px] h-[35px]">

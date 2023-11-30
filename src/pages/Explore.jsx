@@ -39,7 +39,7 @@ const Explore = () => {
   }
 
   return (
-    <section>
+    <section className="w-full h-full overflow-y-auto">
       <InfiniteScroll
         dataLength={explorePosts.length} //This is important field to render the next data
         next={fetchData}
@@ -50,7 +50,7 @@ const Explore = () => {
           </div>
         }
       >
-        <div className="grid grid-cols-3 gap-2 p-4">
+        <div className="grid grid-cols-3 gap-2 p-4 w-full h-full">
           {explorePosts.map((post) => {
             if (post.type === "post") {
               return <Post key={post._id} {...post} />;

@@ -15,7 +15,7 @@ import {
 import { detectFollow } from "../../services/appServices";
 import { Link } from "react-router-dom";
 import ReelUI from "./ReelUI";
-import avatar from "../../assets/images/avatar.jpg"
+import avatar from "../../assets/images/avatar.jpg";
 
 const Video = ({ file, user, description }) => {
   const [isPlay, setIsPlay] = useState(null);
@@ -70,7 +70,7 @@ const Video = ({ file, user, description }) => {
   return (
     <div
       ref={targetRef}
-      className="w-[300px] h-full rounded-md overflow-hidden flex items-center justify-center videoShadow relative"
+      className="w-[300px] max-h-[530px] h-full rounded-md overflow-hidden flex items-center justify-center border border-text-secondary relative"
     >
       <Suspense fallback={<ReelUI />}>
         <video
@@ -138,7 +138,11 @@ const VideoDetails = ({ user, description }) => {
       <div className="text-text-primary space-y-4">
         <div className="flex items-center justify-start space-x-3">
           <div className="rounded-full overflow-hidden w-[35px] h-[35px]">
-            <img src={user?.avatar || avatar} alt={user?.username} width={"35px"} />
+            <img
+              src={user?.avatar || avatar}
+              alt={user?.username}
+              width={"35px"}
+            />
           </div>
           <div className="flex flex-col items-center justify-start">
             <h4 className="text-sm font-medium space-x-1">

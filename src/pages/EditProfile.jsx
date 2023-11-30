@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMyUserAsync } from "../redux/features/user/userSlice";
 import { X } from "@phosphor-icons/react";
 
-const EditProfile = ({setEditProfile}) => {
+const EditProfile = ({ setEditProfile }) => {
   const [image, setImage] = useState(null);
-  const { userInfo, userAvatar, status } = useSelector((state)=>state.user);
-  const { loggedInUserId } = useSelector((state)=>state.auth);
+  const { userInfo, userAvatar, status } = useSelector((state) => state.user);
+  const { loggedInUserId } = useSelector((state) => state.auth);
   const imageRef = useRef();
   const dispatch = useDispatch();
 
@@ -34,20 +34,26 @@ const EditProfile = ({setEditProfile}) => {
     }
   };
 
-  const handleOnSubmit = (data) =>{
-    if(image){
-        dispatch(updateMyUserAsync({...data, avatar:image, id:loggedInUserId}))
-    }else{
-        dispatch(updateMyUserAsync({...data, avatar:null, id:loggedInUserId}))
+  const handleOnSubmit = (data) => {
+    if (image) {
+      dispatch(
+        updateMyUserAsync({ ...data, avatar: image, id: loggedInUserId })
+      );
+    } else {
+      dispatch(
+        updateMyUserAsync({ ...data, avatar: null, id: loggedInUserId })
+      );
     }
-    
-  }
+  };
 
   return (
     <div className="relative w-full h-full p-8">
       <div className="text-text-primary space-y-6 w-full">
         <h4 className="text-2xl font-medium py-4">Edit Profile</h4>
-        <form className="px-20 space-y-6 w-full" onSubmit={handleSubmit(handleOnSubmit)} >
+        <form
+          className="px-20 max-[600px]:px-0 space-y-6 w-full"
+          onSubmit={handleSubmit(handleOnSubmit)}
+        >
           {/* user can change profile image*/}
           <div className="relative flex items-center space-x-8">
             <div className="w-20 flex items-center justify-end">
@@ -83,7 +89,7 @@ const EditProfile = ({setEditProfile}) => {
                 defaultValue={userInfo.name}
                 {...register("name")}
                 rows={1}
-                className="outline-none rounded-sm focus:bg-transparent bg-transparent border border-hover-primary w-[60%] px-2 py-1"
+                className="outline-none rounded-sm focus:bg-transparent bg-transparent border border-hover-primary w-[60%] max-[600px]:w-full px-2 py-1"
               />
               <span className="text-text-secondary text-xs"> 12 / 15 </span>
             </div>
@@ -99,7 +105,7 @@ const EditProfile = ({setEditProfile}) => {
                 defaultValue={userInfo.username}
                 {...register("username")}
                 rows={1}
-                className="outline-none focus:bg-transparent rounded-sm bg-transparent border border-hover-primary w-[60%] px-2 py-1"
+                className="outline-none focus:bg-transparent rounded-sm bg-transparent border border-hover-primary w-[60%] max-[600px]:w-full px-2 py-1"
               />
               <span className="text-text-secondary text-xs"> 12 / 15 </span>
             </div>
@@ -116,7 +122,7 @@ const EditProfile = ({setEditProfile}) => {
                 {...register("bio")}
                 rows={3}
                 cols={12}
-                className="outline-none rounded-sm bg-transparent border border-hover-primary w-[60%] px-2 py-1"
+                className="outline-none rounded-sm bg-transparent border border-hover-primary w-[60%] max-[600px]:w-full px-2 py-1"
               />
               <span className="text-text-secondary text-xs"> 12 / 60 </span>
             </div>
@@ -128,10 +134,10 @@ const EditProfile = ({setEditProfile}) => {
             </div>
             <div className="w-full">
               <select
-              {...register("category")}
+                {...register("category")}
                 name="category"
                 defaultValue={userInfo.category}
-                className="w-[60%] bg-transparent border border-hover-primary rounded-sm editSelect p-1"
+                className="w-[60%] max-[600px]:w-full bg-transparent border border-hover-primary rounded-sm editSelect p-1"
               >
                 <option value="none">Select Category</option>
                 {account_category.map((category) => (
@@ -152,7 +158,7 @@ const EditProfile = ({setEditProfile}) => {
                 name="gender"
                 defaultValue={userInfo.gender}
                 {...register("gender")}
-                className="w-[60%] bg-transparent border border-hover-primary rounded-sm editSelect p-1"
+                className="w-[60%] max-[600px]:w-full bg-transparent border border-hover-primary rounded-sm editSelect p-1"
               >
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
@@ -162,13 +168,21 @@ const EditProfile = ({setEditProfile}) => {
           </div>
           {/* Submit button */}
           <div className="px-28">
-            <button type="submit" className="text-text-primary text-sm font-semibold bg-text-link py-[0.4rem] rounded-md flex items-center justify-center w-20">
-              {status ==="pending"? <div className="loader"></div> : "Submit" }
+            <button
+              type="submit"
+              className="text-text-primary text-sm font-semibold bg-text-link py-[0.4rem] rounded-md flex items-center justify-center w-20"
+            >
+              {status === "pending" ? <div className="loader"></div> : "Submit"}
             </button>
           </div>
         </form>
       </div>
-      <button onClick={()=>setEditProfile(false)} className="absolute top-12 right-10 text-text-primary" ><X size={24} /></button>
+      <button
+        onClick={() => setEditProfile(false)}
+        className="absolute top-12 right-10 text-text-primary"
+      >
+        <X size={24} />
+      </button>
     </div>
   );
 };

@@ -98,7 +98,7 @@ const SideButtons = ({ _id, likes, comments, saved, user }) => {
   };
 
   return (
-    <div className="flex flex-col space-y-6 items-center justify-end text-text-primary h-full">
+    <div className="flex flex-col space-y-6 items-center justify-end text-text-primary max-h-[530px] h-full">
       <div className="flex flex-col justify-center space-y-4">
         <div className="flex flex-col items-center justify-center space-y-2">
           {!liked ? (

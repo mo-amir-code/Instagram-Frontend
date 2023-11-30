@@ -548,6 +548,50 @@ body {
   }
 }
 
+
+
+@media only screen and (max-width: 970px) {  
+  .responivePosts{
+    width: 15rem;
+    height: 15rem;
+  }
+}
+
+@media only screen and (max-width: 865px) {  
+  .responivePosts{
+    width: 13rem;
+    height: 13rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {  
+  .responivePosts{
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+@media only screen and (max-width: 630px) {  
+  .responivePosts{
+    width: 8rem;
+    height: 8rem;
+  }
+}
+
+@media only screen and (max-width: 530px) {  
+  .responivePosts{
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+@media only screen and (max-width: 439px) {  
+  .responivePosts{
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
 @keyframes hamsterEye {
   from, 90%, to {
     transform: scaleY(1);
@@ -636,6 +680,10 @@ body {
   to {
     transform: rotate(-1turn);
   }
+}
+
+@media only screen and (max-width: 600px) {
+  
 }
 
 

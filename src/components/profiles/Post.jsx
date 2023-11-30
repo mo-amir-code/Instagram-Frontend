@@ -1,14 +1,13 @@
-import { faker } from "@faker-js/faker";
-import { ChatTeardropDots, Heart } from "@phosphor-icons/react";
 import React from "react";
+import { ChatTeardropDots, Heart } from "@phosphor-icons/react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   postPageStatusToggle,
   resetPostPageInfo,
-} from "../redux/features/app/appSlice";
+} from "../../redux/features/app/appSlice";
+import { useNavigate } from "react-router-dom";
 
-const Reel = ({ _id, file, likes, comments, description }) => {
+function Post({ _id, file, likes, comments, description, type }) {
   const { postPageInfo, width } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,11 +23,17 @@ const Reel = ({ _id, file, likes, comments, description }) => {
   return (
     <div
       onClick={() => handlePostView()}
-      className="row-span-2 relative group flex justify-center items-center cursor-pointer slideModalUpToDown border border-text-secondary overflow-hidden"
+      className="relative group cursor-pointer slideModalUpToDown overflow-hidden border border-text-secondary flex justify-center items-center responivePosts max-w-[20rem] max-h-[20rem]"
     >
-      <video className="object-cover" autoPlay loop muted>
-        <source src={file} />
-      </video>
+      {type === "post" ? (
+        <img src={file} alt={description} className="object-cover" />
+      ) : (
+        <div className="flex items-center justify-center">
+          <video className="object-cover" muted>
+            <source src={file} />
+          </video>
+        </div>
+      )}
       <div className="absolute top-0 left-0 h-full w-full bg-black/20 group-hover:flex hidden justify-center items-center postsHoverSlideAnimation">
         <div
           className={`text-text-primary ${
@@ -52,6 +57,6 @@ const Reel = ({ _id, file, likes, comments, description }) => {
       </div>
     </div>
   );
-};
+}
 
-export default Reel;
+export default Post;

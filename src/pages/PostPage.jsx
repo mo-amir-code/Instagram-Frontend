@@ -90,7 +90,7 @@ export default function PostPage({ open }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bg-primary text-left shadow-xl transition-all w-[1000px] h-[550px] border border-hover-primary">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bg-primary text-left shadow-xl transition-all w-[85vw] h-[95vh] border border-hover-primary">
                 <div className="w-full h-full flex items-center justify-center text-text-primary">
                   {/* post image/video */}
                   {postPageInfoStatus ? (

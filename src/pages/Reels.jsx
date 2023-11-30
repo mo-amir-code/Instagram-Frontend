@@ -54,31 +54,38 @@ const Reels = () => {
   };
 
   return (
-    <InfiniteScroll
-      dataLength={reels.length} //This is important field to render the next data
-      next={fetchData}
-      hasMore={reels.length != totalReels}
-      loader={
-        <div className="flex items-center justify-center w-full py-8">
-          <HomePostsLoader />
-        </div>
-      }
-    >
-      <div onWheel={handleWheel} className="w-full h-full space-y-3">
-        {reelsStatus ? (
-          <Slider {...settings} ref={sliderRef}>
-            {reels
-              .slice(0)
-              .reverse()
-              .map((reel) => (
-                <Reel key={reel} {...reel} />
-              ))}
-          </Slider>
-        ) : (
-          <ReelUI />
-        )}
-      </div>
-    </InfiniteScroll>
+    <div className="flex items-center justify-center">
+      <section className="max-w-sm flex items-center justify-center">
+        <InfiniteScroll
+          dataLength={reels.length} //This is important field to render the next data
+          next={fetchData}
+          hasMore={reels.length != totalReels}
+          loader={
+            <div className="flex items-center justify-center w-full py-8">
+              <HomePostsLoader />
+            </div>
+          }
+        >
+          <div
+            onWheel={handleWheel}
+            className="h-full space-y-3 flex items-center justify-center"
+          >
+            {reelsStatus ? (
+              <Slider {...settings} ref={sliderRef}>
+                {reels
+                  .slice(0)
+                  .reverse()
+                  .map((reel) => (
+                    <Reel key={reel} {...reel} />
+                  ))}
+              </Slider>
+            ) : (
+              <ReelUI />
+            )}
+          </div>
+        </InfiniteScroll>
+      </section>
+    </div>
   );
 };
 

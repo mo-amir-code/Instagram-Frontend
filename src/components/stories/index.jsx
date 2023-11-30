@@ -3,11 +3,12 @@ import Story from "./Story";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import YourStory from "./YourStory";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectStoryFile } from "../../redux/features/app/appSlice";
 import { useNavigate } from "react-router-dom";
 
 const index = () => {
+  const { width } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const responsive = {
@@ -20,11 +21,11 @@ const index = () => {
       items: 8,
     },
     tablet: {
-      breakpoint: { max: 1024, min: 464 },
+      breakpoint: { max: 1024, min: 700 },
       items: 6,
     },
     mobile: {
-      breakpoint: { max: 464, min: 0 },
+      breakpoint: { max: 600, min: 0 },
       items: 5,
     },
   };
@@ -35,7 +36,7 @@ const index = () => {
       reader.onload = (e) => {
         const imageUrl = e.target.result;
         // console.log(imageUrl);
-        dispatch(selectStoryFile({ file:imageUrl }));
+        dispatch(selectStoryFile({ file: imageUrl }));
         navigate(`/create/story`);
       };
       reader.readAsDataURL(file);
@@ -43,7 +44,7 @@ const index = () => {
   };
 
   return (
-    <div className="mt-8 py-4 px-2 w-[660px] space-x-2">
+    <div className="mt-8 py-4 px-2 w-[660px] max-sm:w-[400px] space-x-2">
       <Carousel responsive={responsive}>
         <YourStory selectStory={selectStory} />
         {[

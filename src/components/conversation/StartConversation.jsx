@@ -9,7 +9,7 @@ const StartConversation = ({ setOpenModal }) => {
       </div>
       <div className="space-y-1 flex flex-col items-center justify-center">
         <h4 className="text-xl font-medium">Your Messages</h4>
-        <p className="text-text-secondary text-sm">
+        <p className="text-text-secondary text-sm text-center">
           Send private photos and messages to a friend
         </p>
         <div className="pt-3">

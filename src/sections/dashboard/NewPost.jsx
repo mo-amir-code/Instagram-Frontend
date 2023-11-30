@@ -20,13 +20,17 @@ const NewPost = () => {
   }, []);
 
   return (
-    <section className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm text-text-primary">
+    <section
+      className={`fixed max-[650px]:overflow-y-scroll ${
+        fileType === "video" && "overflow-y-auto"
+      } top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm text-text-primary`}
+    >
       {!file ? (
-        <div className="bg-modal-bg w-[380px] h-[380px] rounded-xl relative">
+        <div className="bg-modal-bg w-[380px] h-[380px] max-[430px]:w-[340px] max-[430px]:h-[340px] max-[380px]:w-[300px] max-[380px]:h-[300px] rounded-xl relative">
           <div className="flex items-center justify-center border-b border-text-secondary">
             <h4 className="font-medium py-3">Create new post</h4>
           </div>
-          <div className="flex items-center justify-center pt-20 mr-12 -rotate-2 ">
+          <div className="flex items-center justify-center max-[380px]:pt-10 pt-20 mr-12 -rotate-2 ">
             <div className="relative">
               <Image size={80} />
               <Video
@@ -65,7 +69,9 @@ const NewPost = () => {
         </>
       )}
       <button
-        className="absolute top-6 right-6"
+        className={`absolute top-6 right-6 ${
+          fileType === "video" && "max-[480px]:top-16"
+        }`}
         onClick={() => {
           dispatch(toggleNewPostModal());
           dispatch(resetPostStatus());

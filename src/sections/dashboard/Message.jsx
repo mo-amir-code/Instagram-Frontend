@@ -9,6 +9,7 @@ import {
   fetchConversations,
   selectExistingConversation,
   setPrimaryGeneralConvs,
+  toggleMobileMessage,
 } from "../../redux/features/app/appSlice";
 import { socket } from "../../socket";
 import toast from "react-hot-toast";
@@ -19,7 +20,7 @@ const Message = ({ setOpenModal }) => {
   const { username, loggedInUserId, following } = useSelector(
     (state) => state.auth
   );
-  const { directChat } = useSelector((state) => state.app);
+  const { directChat, width } = useSelector((state) => state.app);
   const { conversations, primaryConversations, generalConversations } =
     directChat;
   const dispatch = useDispatch();
@@ -50,13 +51,18 @@ const Message = ({ setOpenModal }) => {
 
   const handleClick = ({ id, userId }) => {
     dispatch(currentConversationStatusUpdate("pending"));
+    dispatch(toggleMobileMessage(false));
     socket.emit("select-existing-conversation", { id, userId }, (data) => {
       dispatch(selectExistingConversation(data));
     });
   };
 
   return (
-    <section className="flex flex-col bg-bg-primary w-[400px] h-screen rounded-lg border-r border-hover-primary slideModal">
+    <section
+      className={`flex flex-col bg-bg-primary ${
+        width <= 768 ? "w-full" : "w-[400px]"
+      } h-full rounded-lg border-r border-hover-primary slideModal`}
+    >
       {/* Header */}
       <div className="p-6 mt-3 flex justify-between items-center">
         <div className="flex items-center space-x-2 text-text-primary">

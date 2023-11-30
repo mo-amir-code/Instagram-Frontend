@@ -11,10 +11,11 @@ import { socket } from "../socket";
 import {
   newNotificationRecieved,
   toggleIsNewNotification,
+  updateScreenWidthAndHeight,
 } from "../redux/features/app/appSlice";
 
 const index = () => {
-  const { pcNavModal, newPostModal, postPageStatus } = useSelector(
+  const { pcNavModal, newPostModal, postPageStatus, width } = useSelector(
     (state) => state.app
   );
   const dispatch = useDispatch();
@@ -32,22 +33,52 @@ const index = () => {
     };
   });
 
+  useEffect(() => {
+    dispatch(
+      updateScreenWidthAndHeight({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    // Function to update screenWidth and screenHeight when the window is resized
+    const handleResize = () => {
+      dispatch(
+        updateScreenWidthAndHeight({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        })
+      );
+    };
+
+    // Attach the event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className="flex h-screen overflow-y-hidden">
         <div
           className={` ${
             pcNavModal === "messages" ||
             pcNavModal === "search" ||
-            pcNavModal === "notifications"
+            pcNavModal === "notifications" ||
+            width < 1280
               ? "w-[75px]"
               : "w-[245px]"
-          } w-[245px] bg-bg-primary border-r border-hover-primary z-10`}
+          } w-[245px] bg-bg-primary border-r border-hover-primary z-10 `}
         >
           <div
             className={`h-screen sticky top-0 left-0 ${
-              pcNavModal && "w-[75px]"
-            }`}
+              pcNavModal || (width !== null && width < 1280 && "w-[75px]")
+            } `}
           >
             <Sidebar pcNavModal={pcNavModal} />
           </div>
@@ -70,7 +101,9 @@ const index = () => {
         <div className="bg-bg-primary flex-grow z-0">
           <div
             className={` ${
-              pcNavModal === "messages" ? "flex-grow" : "w-[1035px]"
+              pcNavModal === "messages" || width < 1280
+                ? "flex-grow"
+                : "w-[1035px]"
             } mx-auto h-full`}
           >
             <Outlet />

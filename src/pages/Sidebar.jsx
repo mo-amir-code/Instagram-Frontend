@@ -29,7 +29,7 @@ import { fetchNotificationsCountAsync } from "../redux/features/app/appAsyncThun
 
 const Sidebar = ({ pcNavModal }) => {
   const [openMoreModal, setOpenMoreModal] = useState(false);
-  const { active } = useSelector((state) => state.app);
+  const { active, width } = useSelector((state) => state.app);
   const { isLoggedIn, username, loggedInUserId } = useSelector(
     (state) => state.auth
   );
@@ -41,7 +41,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Home",
       icon: (
         <House
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
         />
       ),
@@ -50,7 +50,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Search",
       icon: (
         <MagnifyingGlass
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
           color={pcNavModal === "search" ? "red" : "#fff"}
         />
@@ -60,7 +60,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Explore",
       icon: (
         <Compass
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
         />
       ),
@@ -69,7 +69,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Reels",
       icon: (
         <FilmReel
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
         />
       ),
@@ -78,7 +78,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Messages",
       icon: (
         <Chats
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
           color={pcNavModal === "messages" ? "red" : "#fff"}
         />
@@ -88,7 +88,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Notifications",
       icon: (
         <Heart
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
           color={pcNavModal === "notifications" ? "red" : "#fff"}
         />
@@ -98,7 +98,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Create",
       icon: (
         <PlusCircle
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
         />
       ),
@@ -107,7 +107,7 @@ const Sidebar = ({ pcNavModal }) => {
       title: "Profile",
       icon: (
         <User
-          size={!pcNavModal ? 26 : 30}
+          size={!pcNavModal && width >= 1280 ? 26 : 30}
           className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
         />
       ),
@@ -171,9 +171,9 @@ const Sidebar = ({ pcNavModal }) => {
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchNotificationsCountAsync({ userId: loggedInUserId }));
-      setTimeout(()=>{
-        dispatch(toggleIsNewNotification())
-      }, 2500)
+      setTimeout(() => {
+        dispatch(toggleIsNewNotification());
+      }, 2500);
     }
   }, []);
 
@@ -181,21 +181,21 @@ const Sidebar = ({ pcNavModal }) => {
     <>
       <section
         className={`p-[8px] pb-[25px] ${
-          !pcNavModal ? "w-[250px]" : "w-[75px]"
+          !pcNavModal && width >= 1280 ? "w-[250px]" : "w-[75px]"
         } flex flex-col justify-between h-full`}
       >
         <section>
-          <div className={`${pcNavModal ? "py-5 px-1" : ""}`}>
-            {pcNavModal ? (
+          <div className={`${pcNavModal || width > 1280 ? "py-5 px-1" : ""}`}>
+            {pcNavModal || width < 1280 ? (
               <div className="ml-0 py-3 group flex items-center justify-center hover:bg-hover-primary rounded-lg cursor-pointer">
                 <InstagramLogo
-                  size={!pcNavModal ? 26 : 30}
+                  size={!pcNavModal && width >= 1280 ? 26 : 30}
                   color="#fff"
                   className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
                 />
               </div>
             ) : (
-              <Logo />
+              width >= 1280 && <Logo />
             )}
           </div>
           <div className="flex flex-col pl-[4px] space-y-[2px] mt-[6px]">
@@ -208,10 +208,10 @@ const Sidebar = ({ pcNavModal }) => {
                 } group items-center hover:bg-hover-primary py-[11px] mr-[8px] pl-[8px] text-text-primary font-medium space-x-[16px] rounded-lg cursor-pointer transition duration-300`}
               >
                 <div className="flex items-center space-x-2">
-                  {active === idx && !pcNavModal && <Dot />}
+                  {active === idx && !pcNavModal && width >= 1280 && <Dot />}
                   {el.icon}
                 </div>
-                {!pcNavModal && <h4>{el.title}</h4>}
+                {!pcNavModal && width >= 1280 && <h4>{el.title}</h4>}
                 {idx === 5 && <NtfAlert />}
               </div>
             ))}
@@ -227,10 +227,10 @@ const Sidebar = ({ pcNavModal }) => {
           >
             <div className="flex items-center hover:bg-hover-primary py-[11px] mr-[8px] pl-[8px] text-text-primary font-medium space-x-[16px] rounded-lg cursor-pointer transition-opacity ease-in-out">
               <List
-                size={!pcNavModal ? 26 : 30}
+                size={!pcNavModal && width >= 1280 ? 26 : 30}
                 className="group-hover:scale-110 group-active:scale-90 transition-all ease-in-out duration-200"
               />
-              {!pcNavModal && <h4>More</h4>}
+              {!pcNavModal && width >= 1280 && <h4>More</h4>}
             </div>
           </div>
           {openMoreModal && (

@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import {
+  ArrowArcLeft,
+  ArrowLeft,
   ImageSquare,
   Info,
   Phone,
@@ -22,6 +24,7 @@ import {
   sendingMessageStatusUpdate,
   setActive,
   setNavModal,
+  toggleMobileMessage,
 } from "../../redux/features/app/appSlice";
 import { useNavigate } from "react-router-dom";
 import avatar from "../../assets/images/avatar.jpg";
@@ -38,7 +41,7 @@ const Conversation = ({ conversationId, user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loggedInUserId } = useSelector((state) => state.auth);
-  const { directChat } = useSelector((state) => state.app);
+  const { directChat, width } = useSelector((state) => state.app);
   const { currentConversation, sendingMessageStatus } = directChat;
 
   const handleInputChange = (e) => {
@@ -93,10 +96,14 @@ const Conversation = ({ conversationId, user }) => {
     dispatch(setActive(7));
   };
 
+  const handleBack = () => {
+    dispatch(toggleMobileMessage(true));
+  };
+
   return (
     <div className="flex flex-col h-full w-full">
       {/* Header */}
-      <div className="flex items-center justify-between text-text-primary p-4 border-b border-hover-primary">
+      <div className="relative flex items-center justify-between text-text-primary p-4 border-b border-hover-primary">
         <div className="flex justify-start space-x-3">
           <div className="rounded-full overflow-hidden w-[45px] h-[45px]">
             <img
@@ -128,6 +135,14 @@ const Conversation = ({ conversationId, user }) => {
             <Info size={30} />
           </button>
         </div>
+        {width <= 768 && (
+          <button
+            onClick={() => handleBack()}
+            className=" absolute right-8 top-[120%] p-1 rounded-full overflow-hidden flex items-center justify-center bg-hover-primary hover:bg-text-secondary z-40"
+          >
+            <ArrowLeft size={14} />
+          </button>
+        )}
       </div>
       {/* End header */}
 

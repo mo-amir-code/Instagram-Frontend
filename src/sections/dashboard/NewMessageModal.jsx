@@ -10,6 +10,7 @@ import HomePostsLoader from "../../components/loaders/HomePostsLoader";
 import { socket } from "../../socket";
 import {
   currentConversationStatusUpdate,
+  toggleMobileMessage,
   updateCurrentConversation,
 } from "../../redux/features/app/appSlice";
 
@@ -41,6 +42,7 @@ export default function NewMessageModal({
 
   const handleStartChat = ({ userId }) => {
     dispatch(currentConversationStatusUpdate("pending"));
+    dispatch(toggleMobileMessage(false));
     socket.emit("start-conversation", { userId, loggedInUserId }, (cbData) => {
       if (cbData.status === "success") {
         dispatch(updateCurrentConversation(cbData));
