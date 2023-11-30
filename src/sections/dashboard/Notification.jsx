@@ -4,6 +4,7 @@ import NtfBody from "../../components/notifcations/NtfBody";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNotificationsAsync } from "../../redux/features/app/appAsyncThunk";
 import { filterNotifications } from "../../services/appServices";
+import NotFound from "../../pages/NotFound"
 
 const Notification = () => {
   const [todayNotification, setTodayNotification] = useState([]);
@@ -28,7 +29,7 @@ const Notification = () => {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn && notificationStatus !== "success") {
+    if (isLoggedIn && notificationStatus === "success") {
       const { today, week, month, year } = filterNotifications(notifications);
       setTodayNotification(today);
       setWeekNotification(week);
@@ -46,7 +47,7 @@ const Notification = () => {
       </div>
 
       {/* Notifications */}
-      <div className="space-y-4">
+      {notifications.length > 0 ? <div className="space-y-4">
         {todayNotification.length > 0 && (
           <NtfBody ntfs={todayNotification} forTime={"Today"} />
         )}
@@ -59,7 +60,7 @@ const Notification = () => {
         {yearNotification.length > 0 && (
           <NtfBody ntfs={yearNotification} forTime={"This year"} />
         )}
-      </div>
+      </div> : <NotFound message={"Nothing😭😭"} />}
     </section>
   );
 };
