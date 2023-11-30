@@ -8,7 +8,7 @@ const Home = () => {
   const { width } = useSelector((state) => state.app);
 
   return (
-    <section className="flex justify-center h-full overflow-y-auto">
+    <section className="flex justify-center h-full">
       <section className="flex-grow flex flex-col items-center">
         <Story />
         <Post />

@@ -11,6 +11,7 @@ import { socket } from "../socket";
 import {
   recievedNewMessage,
   sendingMessageStatusUpdate,
+  toggleMobileMessage,
 } from "../redux/features/app/appSlice";
 import toast from "react-hot-toast";
 
@@ -23,6 +24,10 @@ const Messages = () => {
   const { loggedInUserId } = useSelector((state) => state.auth);
   const { currentConversationStatus, currentConversationUser } = directChat;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(toggleMobileMessage(false));
+  }, []);
 
   useEffect(() => {
     socket?.on("recieved-new-message", (data) => {

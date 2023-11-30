@@ -110,7 +110,7 @@ const index = () => {
             className={` ${
               pcNavModal === "messages" || width < 1280
                 ? "flex-grow"
-                : "w-[1035px]"
+                : "w-[1035px]  "
             } mx-auto h-full`}
           >
             <Outlet />
