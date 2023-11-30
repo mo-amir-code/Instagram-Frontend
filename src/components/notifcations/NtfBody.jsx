@@ -30,27 +30,30 @@ const NtfBody = ({ ntfs, forTime }) => {
       <h4 className="text-base font-bold">{forTime}</h4>
       {/* notifications */}
       <div className="flex flex-col">
-        {ntfs.map((ntf, idx) => {
-          if (ntf.type === "like") {
-            return (
-              <LikeNtf
-                key={idx}
-                {...ntf}
-                handlePostView={handlePostView}
-                handleUserView={handleUserView}
-              />
-            );
-          } else {
-            return (
-              <CmtNtf
-                key={idx}
-                {...ntf}
-                handlePostView={handlePostView}
-                handleUserView={handleUserView}
-              />
-            );
-          }
-        })}
+        {ntfs
+          .slice()
+          .reverse()
+          .map((ntf, idx) => {
+            if (ntf.type === "like") {
+              return (
+                <LikeNtf
+                  key={idx}
+                  {...ntf}
+                  handlePostView={handlePostView}
+                  handleUserView={handleUserView}
+                />
+              );
+            } else {
+              return (
+                <CmtNtf
+                  key={idx}
+                  {...ntf}
+                  handlePostView={handlePostView}
+                  handleUserView={handleUserView}
+                />
+              );
+            }
+          })}
       </div>
     </section>
   );
