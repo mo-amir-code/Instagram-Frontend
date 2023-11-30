@@ -34,6 +34,7 @@ import {
 } from "../redux/features/app/appSlice";
 import avatar from "../assets/images/avatar.jpg";
 import NoPosts from "../components/profiles/NoPosts";
+import NotFound from "./NotFound";
 
 const Profile = () => {
   const [follow, setFollow] = useState(false);
@@ -68,7 +69,7 @@ const Profile = () => {
     }
   }, [changes]);
 
-  if (unknownUserStatus === "pending" || !unknownUserStatus) {
+  if (unknownUserStatus === "pending") {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <ProfileLoader />
@@ -114,6 +115,12 @@ const Profile = () => {
     dispatch(setNavModal("messages"));
     navigate("/direct/inbox");
   };
+
+  if (unknownUserStatus === "User not found!") {
+    return <NotFound />;
+  } else if (unknownUserStatus === "error" || !unknownUserStatus) {
+    return <NotFound message="Something went wrong" />;
+  }
 
   return (
     <div className="text-text-primary h-full overflow-y-auto">

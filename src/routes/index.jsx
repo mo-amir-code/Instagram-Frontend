@@ -15,6 +15,7 @@ import Messages from "../pages/Messages";
 import { useEffect } from "react";
 import { connectSocket } from "../socket";
 import StoryCanvasPage from "../pages/StoryCanvas";
+import NotFound from "../pages/NotFound";
 
 const router = () => {
   const { isLoggedIn, loggedInUserId } = useSelector((state) => state.auth);
@@ -81,6 +82,10 @@ const router = () => {
           element: <OTPVerifyForm />,
         },
       ],
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ]);
 

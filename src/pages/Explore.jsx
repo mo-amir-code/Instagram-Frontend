@@ -23,6 +23,7 @@ const Explore = () => {
   }, []);
 
   const fetchData = () => {
+    console.log(explorePostsTotal);
     const data = {
       results: explorePosts.length,
       totalResult: explorePostsTotal,
@@ -39,7 +40,7 @@ const Explore = () => {
   }
 
   return (
-    <section className="w-full h-full overflow-y-auto">
+    <section className="w-full overflow-y-auto">
       <InfiniteScroll
         dataLength={explorePosts.length} //This is important field to render the next data
         next={fetchData}

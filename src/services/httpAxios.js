@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const httpAxios = axios.create({
-  baseURL: "https://instagram-backend-w2k6.onrender.com",
-  // baseURL: "http://localhost:8000",
+  // baseURL: "https://instagram-backend-w2k6.onrender.com",
+  baseURL: "http://localhost:8000",
 });

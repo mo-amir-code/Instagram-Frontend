@@ -90,7 +90,7 @@ const slice = createSlice({
         state.unknownUserAvatar = action.payload.data.avatar;
       })
       .addCase(fetchUserAsync.rejected, (state, action) => {
-        state.unknownUserStatus = "error";
+        state.unknownUserStatus = action.error.status;
         toast.error(action.error.message);
       })
       .addCase(fetchFeatureUsersAsync.fulfilled, (state, action) => {

@@ -70,7 +70,7 @@ const index = () => {
 
   return (
     <>
-      <div className="flex h-screen overflow-y-hidden">
+      <div className="flex min-h-screen">
         <div
           className={` ${
             pcNavModal === "messages" ||
@@ -81,8 +81,9 @@ const index = () => {
               : "w-[245px]"
           } w-[245px] bg-bg-primary border-r border-hover-primary z-10 `}
         >
+          <div className="w-[75px] h-full" />
           <div
-            className={`h-screen sticky top-0 left-0 ${
+            className={`h-screen fixed top-0 left-0 ${
               pcNavModal || (width !== null && width < 1280 && "w-[75px]")
             } `}
           >
