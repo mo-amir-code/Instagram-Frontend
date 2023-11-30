@@ -26,7 +26,7 @@ const index = () => {
     },
     mobile: {
       breakpoint: { max: 600, min: 0 },
-      items: 5,
+      items: 4,
     },
   };
 
@@ -44,7 +44,7 @@ const index = () => {
   };
 
   return (
-    <div className="mt-8 py-4 px-2 w-[660px] max-sm:w-[400px] space-x-2">
+    <div className="mt-8 py-4 px-2 w-[660px] max-sm:w-[360px] space-x-2">
       <Carousel responsive={responsive}>
         <YourStory selectStory={selectStory} />
         {[

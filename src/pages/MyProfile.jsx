@@ -13,6 +13,7 @@ import avatar from "../assets/images/avatar.jpg";
 import NoPosts from "../components/profiles/NoPosts";
 import SavedPosts from "../components/profiles/SavedPosts";
 import Post from "../components/profiles/Post";
+import { useParams } from "react-router-dom";
 
 const MyProfile = () => {
   const [mediaTab, setMediaTab] = useState(1);
@@ -23,9 +24,10 @@ const MyProfile = () => {
   const { myUserPosts, myUserSaved } = useSelector((state) => state.app);
   const [editProfile, setEditProfile] = useState(false);
   const dispatch = useDispatch();
+  const { profile } = useParams();
 
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo || userInfo?.username !== profile) {
       dispatch(fetchMyUserAsync(loggedInUserId));
     }
     dispatch(fetchMyUserPostAsync(loggedInUserId));
@@ -189,8 +191,13 @@ const MyProfile = () => {
                 <div
                   className={`${
                     myUserPosts.length > 0 && mediaTab !== 3
-                      ? "grid grid-cols-3 gap-1"
-                      : ""
+                      ? ` ${
+                          myUserPosts.filter((el) => el.type !== "post")
+                            .length !== 0
+                            ? "grid"
+                            : null
+                        } grid-cols-3 gap-1`
+                      : null
                   } `}
                 >
                   {(() => {

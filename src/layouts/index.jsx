@@ -83,7 +83,7 @@ const index = () => {
         >
           <div className="w-[75px] h-full" />
           <div
-            className={`h-screen fixed top-0 left-0 ${
+            className={`h-full fixed top-0 left-0 ${
               pcNavModal || (width !== null && width < 1280 && "w-[75px]")
             } `}
           >

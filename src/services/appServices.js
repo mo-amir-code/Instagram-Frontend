@@ -346,7 +346,7 @@ export const filterNotifications = (notifications) => {
     const weeks = Math.floor(days / 7);
     const monthes = Math.floor(days / 30);
     const years = Math.floor(days / 365);
-
+    
     if (days == 0) {
       today.push(ntf);
     } else if (weeks == 0) {
@@ -359,6 +359,6 @@ export const filterNotifications = (notifications) => {
       ntfs.push(ntf);
     }
   });
-
+  
   return { today, week, month, year, ntfs };
 };

@@ -17,6 +17,7 @@ import MoreModal from "../sections/dashboard/MoreModal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  postPageStatusToggle,
   setActive,
   setNavModal,
   toggleIsNewNotification,
@@ -168,6 +169,12 @@ const Sidebar = ({ pcNavModal }) => {
     }
   };
 
+  const handleHome = () => {
+    navigate("/");
+    dispatch(setActive(0));
+    dispatch(setNavModal(null));
+  };
+
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchNotificationsCountAsync({ userId: loggedInUserId }));
@@ -185,7 +192,12 @@ const Sidebar = ({ pcNavModal }) => {
         } flex flex-col justify-between h-full`}
       >
         <section>
-          <div className={`${pcNavModal || width > 1280 ? "py-5 px-1" : ""}`}>
+          <div
+            onClick={() => handleHome()}
+            className={`${
+              pcNavModal || width > 1280 ? "py-5 px-1" : null
+            } cursor-pointer`}
+          >
             {pcNavModal || width < 1280 ? (
               <div className="ml-0 py-3 group flex items-center justify-center hover:bg-hover-primary rounded-lg cursor-pointer">
                 <InstagramLogo
