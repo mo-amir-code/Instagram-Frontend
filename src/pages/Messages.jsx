@@ -68,7 +68,7 @@ const Messages = () => {
               <ProfileLoader />
             </div>
           ) : (
-            <StartConversation setOpenModal={setOpenNewMessageModal} />
+            width > 768 && <StartConversation setOpenModal={setOpenNewMessageModal} />
           )}
         </section>
       )}
