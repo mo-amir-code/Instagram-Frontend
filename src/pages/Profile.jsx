@@ -291,8 +291,15 @@ const Profile = () => {
               <div
                 className={`${
                   userPosts.length > 0 && mediaTab !== 3
-                    ? "grid grid-cols-3 gap-1"
-                    : ""
+                    ? ` ${
+                        userPosts.filter((el) => el.type !== "post").length != 0
+                          ? "grid"
+                          : userPosts.filter((el) => el.type === "post")
+                              .length > 0 &&
+                            mediaTab === 1 &&
+                            "grid"
+                      } grid-cols-3 gap-1`
+                    : null
                 } `}
               >
                 {(() => {
