@@ -36,7 +36,7 @@ const index = () => {
     if (isLoggedIn) {
       socket?.emit("conversations-update-count", { loggedInUserId }, (data) => {
         console.log(data);
-        dispatch(updateConversationUpdateCount(data.conversationsCount));
+        dispatch(updateConversationUpdateCount(data.count));
       });
     }
 
