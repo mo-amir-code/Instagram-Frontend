@@ -219,7 +219,7 @@ const Post = ({
     if (postPageInfo?._id !== _id) {
       dispatch(resetPostPageInfo());
     }
-    dispatch(postPageStatusToggle());
+    dispatch(postPageStatusToggle(true));
     navigate(`/p/${_id}`);
   };
 
@@ -253,7 +253,7 @@ const Post = ({
   };
 
   return (
-    <div className="w-[480px] max-sm:w-[400px] max-[512px]:w-[320px] flex flex-col text-white space-y-2 ">
+    <div className="w-[480px] max-sm:w-[400px] max-[512px]:w-[320px] max-[440px]:w-[260px] flex flex-col text-white space-y-2 ">
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-start space-x-3">
           <div className="rounded-full overflow-hidden w-[35px] h-[35px]">
@@ -295,7 +295,7 @@ const Post = ({
       </div>
       <div
         className={`border border-text-secondary ${
-          type === "post" ? "h-[480px] max-[640px]:h-[400px] max-[513px]:h-[320px]" : "h-[534px]"
+          type === "post" ? "h-[480px] max-[640px]:h-[400px] max-[512px]:h-[320px] max-[440px]:h-[260px]" : "h-[534px] max-[440px]:h-[400px]"
         } rounded-sm flex items-center justify-center overflow-hidden relative`}
       >
         {type === "post" ? (

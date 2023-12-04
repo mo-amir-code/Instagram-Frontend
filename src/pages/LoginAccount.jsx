@@ -6,7 +6,7 @@ const LoginAccount = () => {
   return (
     <div className="flex flex-col items-center justify-center space-y-8 h-full">
         <IsLoggedInLoader />
-        <p className="text-text-primary text-base font-semibold cursor-pointer">
+        <p className="text-text-primary text-base font-semibold cursor-pointer max-sm:text-sm text-center">
           You are not logged in, Please login your account{" "}
           <span className="text-text-link">
             <Link to={"/auth/signin"}>here</Link>

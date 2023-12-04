@@ -10,7 +10,7 @@ const NotFound = ({ message }) => {
       <div className="w-[40%] max-sm:w-[80%] flex flex-col items-center space-y-4">
         <img src={notFound} alt="not found" />
         <div className="space-y-0 flex flex-col items-center justify-center">
-          <h4 className="text-2xl max-md:text-xl max-sm:text-lg font-semibold">
+          <h4 className="text-2xl max-md:text-xl max-sm:text-base font-semibold">
             {message ? message : "Page not found!"}
           </h4>
           <p className="text-sm">

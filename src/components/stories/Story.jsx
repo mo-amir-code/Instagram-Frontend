@@ -6,16 +6,19 @@ const border_color =
 
 const Story = () => {
   return (
-    <div className="flex items-center justify-center" >
-    <div style={{ border: `2px solid red` }} className="rounded-full p-[2px] cursor-pointer overflow-hidden">
-      <div className="flex justify-center items-center rounded-full overflow-hidden w-[60px] h-[60px]">
-        <img
-          src={faker.image.avatar()}
-          alt={faker.person.fullName()}
-          width={"60px"}
-        />
+    <div className="flex items-center justify-center">
+      <div
+        style={{ border: `2px solid red` }}
+        className="rounded-full p-[2px] cursor-pointer overflow-hidden"
+      >
+        <div className="flex justify-center items-center rounded-full overflow-hidden w-[60px] h-[60px] max-[440px]:w-[50px] max-[440px]:h-[50px]">
+          <img
+            src={faker.image.avatar()}
+            alt={faker.person.fullName()}
+            className="w-[60px] max-[440px]:w-[50px]"
+          />
+        </div>
       </div>
-    </div>
     </div>
   );
 };

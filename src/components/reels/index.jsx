@@ -5,7 +5,7 @@ import SideButtons from "./SideButtons";
 const index = ({ likes, comments, saved, ...data }) => {
   return (
     <div className="h-screen w-full py-[3.5%]">
-      <div className="h-full w-full flex items-center justify-center space-x-8">
+      <div className="h-full w-full flex items-center justify-center space-x-8 max-sm:space-x-0">
         <Video {...data} />
           <SideButtons
             likes={likes}

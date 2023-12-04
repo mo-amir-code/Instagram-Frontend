@@ -19,7 +19,7 @@ const Search = () => {
 
   return (
     <section
-      className={`flex flex-col bg-bg-primary w-[400px] h-screen rounded-lg border-r border-hover-primary slideModal`}
+      className={`flex flex-col bg-bg-primary w-[400px] max-[500px]:w-[350px] max-[450px]:w-[300px] max-[390px]:w-[260px] min-h-screen rounded-lg border-r border-hover-primary slideModal`}
     >
       {/* Heading */}
       <div className="p-6">

@@ -15,7 +15,7 @@ const Header = ({ user }) => {
   const handleUserView = () => {
     naviagte(`/${user.username}`);
     dispatch(setActive(7));
-    dispatch(postPageStatusToggle());
+    dispatch(postPageStatusToggle(false));
   };
 
   return (

@@ -41,6 +41,7 @@ import {
 const initialState = {
   directChat: {
     conversations: [],
+    conversationsUpdateCount: 0,
     primaryConversations: [],
     generalConversations: [],
     conversationsStatus: null, // pending, success, error
@@ -105,8 +106,8 @@ const slice = createSlice({
     setActive(state, action) {
       state.active = action.payload;
     },
-    postPageStatusToggle(state) {
-      state.postPageStatus = !state.postPageStatus;
+    postPageStatusToggle(state, action) {
+      state.postPageStatus = action.payload;
     },
     resetPostPageInfo(state) {
       state.postPageInfo = undefined;
@@ -207,6 +208,9 @@ const slice = createSlice({
     },
     toggleMobileMessage(state, action) {
       state.mobileMessage = action.payload;
+    },
+    updateConversationUpdateCount(state, action) {
+      state.directChat.conversationsUpdateCount = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -452,7 +456,8 @@ export const {
   newNotificationRecieved,
   toggleIsNewNotification,
   updateScreenWidthAndHeight,
-  toggleMobileMessage
+  toggleMobileMessage,
+  updateConversationUpdateCount,
 } = slice.actions;
 
 const handleUpdateFollowingList = (postUser) => {

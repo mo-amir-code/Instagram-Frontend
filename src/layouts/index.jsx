@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import Sidebar from "../pages/Sidebar";
 import Search from "../sections/dashboard/Search";
 import Notification from "../sections/dashboard/Notification";
@@ -10,8 +10,10 @@ import { useEffect } from "react";
 import { socket } from "../socket";
 import {
   newNotificationRecieved,
+  postPageStatusToggle,
   setActive,
   toggleIsNewNotification,
+  updateConversationUpdateCount,
   updateScreenWidthAndHeight,
 } from "../redux/features/app/appSlice";
 
@@ -19,6 +21,8 @@ const index = () => {
   const { pcNavModal, newPostModal, postPageStatus, width } = useSelector(
     (state) => state.app
   );
+  const { isLoggedIn, loggedInUserId } = useSelector((state) => state.auth);
+  const { id, profile } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,8 +33,16 @@ const index = () => {
       }, 3000);
     });
 
+    if (isLoggedIn) {
+      socket?.emit("conversations-update-count", { loggedInUserId }, (data) => {
+        console.log(data);
+        dispatch(updateConversationUpdateCount(data.conversationsCount));
+      });
+    }
+
     return () => {
       socket?.off("new-notification");
+      socket?.off("conversation-update-count");
     };
   });
 
@@ -43,8 +55,14 @@ const index = () => {
     );
 
     const path = window.location.pathname;
-    if (path === "/") {
+    if (id) {
+      dispatch(postPageStatusToggle(true));
+    } else if (profile) {
+      dispatch(setActive(7));
+    } else if (path === "/") {
       dispatch(setActive(0));
+    } else if (path === "/signin-error") {
+      dispatch(setActive(7));
     }
   }, []);
 

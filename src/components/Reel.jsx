@@ -17,7 +17,7 @@ const Reel = ({ _id, file, likes, comments, description }) => {
     if (postPageInfo?._id !== _id) {
       dispatch(resetPostPageInfo());
     }
-    dispatch(postPageStatusToggle());
+    dispatch(postPageStatusToggle(true));
     navigate(`/p/${_id}`);
   };
 

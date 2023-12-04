@@ -39,7 +39,7 @@ const Notification = () => {
   }, [notifications]);
 
   return (
-    <section className="flex flex-col bg-bg-primary w-[400px] h-screen rounded-lg border-r border-hover-primary text-text-primary overflow-y-auto slideModal">
+    <section className="flex flex-col bg-bg-primary w-[400px] h-screen rounded-lg border-r border-hover-primary text-text-primary overflow-y-auto slideModal max-[500px]:w-[350px] max-[450px]:w-[300px] max-[390px]:w-[260px]">
       {/* Header */}
       <div className="px-6 pt-6 pb-3 flex justify-between items-center">
         <h4 className="text-2xl font-bold">Notifications</h4>

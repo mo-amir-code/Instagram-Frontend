@@ -44,7 +44,7 @@ const index = () => {
   };
 
   return (
-    <div className="mt-8 py-4 px-2 w-[660px] max-sm:w-[360px] space-x-2">
+    <div className="mt-8 py-4 px-2 w-[660px] max-sm:w-[360px] space-x-2 max-[440px]:w-[260px]">
       <Carousel responsive={responsive}>
         <YourStory selectStory={selectStory} />
         {[

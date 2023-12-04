@@ -8,7 +8,12 @@ import { fetchPostInfoAsync } from "../redux/features/app/appAsyncThunk";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileLoader from "../components/loaders/ProfileLoader";
-import { Play, SpeakerHigh, SpeakerSimpleSlash } from "@phosphor-icons/react";
+import {
+  Play,
+  SpeakerHigh,
+  SpeakerSimpleSlash,
+  X,
+} from "@phosphor-icons/react";
 import { useState } from "react";
 
 export default function PostPage({ open }) {
@@ -18,7 +23,7 @@ export default function PostPage({ open }) {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { postPageInfo, postPageInfoStatus } = useSelector(
+  const { postPageInfo, postPageInfoStatus, width } = useSelector(
     (state) => state.app
   );
   const videoRef = useRef();
@@ -33,7 +38,7 @@ export default function PostPage({ open }) {
   }, [open]);
 
   const handleClose = () => {
-    dispatch(postPageStatusToggle());
+    dispatch(postPageStatusToggle(false));
     navigate(-1);
   };
 
@@ -59,13 +64,15 @@ export default function PostPage({ open }) {
     }
   };
 
+  const dummyFunction = () => {};
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={handleClose}
+        onClose={width >= 1280 ? handleClose : dummyFunction}
       >
         <Transition.Child
           as={Fragment}
@@ -90,18 +97,20 @@ export default function PostPage({ open }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-bg-primary text-left shadow-xl transition-all w-[85vw] h-[95vh] max-h-[550px] max-w-[1100px] border border-hover-primary">
+              <Dialog.Panel className="relative transform rounded-lg bg-bg-primary text-left shadow-xl transition-all w-[85vw] h-[95vh] max-h-[550px] max-w-[1100px] border border-hover-primary">
                 <div className="w-full h-full flex max-sm:flex-col max-sm:max-h-max items-center justify-center text-text-primary overflow-y-auto">
                   {/* post image/video */}
                   {postPageInfoStatus ? (
                     <>
                       <div className="w-[45%] max-sm:w-full border-r border-hover-primary h-auto flex items-center justify-center">
                         {postPageInfo.type === "post" ? (
-                          <img
-                            src={postPageInfo.file}
-                            alt={postPageInfo.description}
-                            className="object-cover h-full max-sm:pt-96 max-[464px]:pt-72 max-[350px]:pt-56"
-                          />
+                          <div className="w-full h-full max-sm:h-[600px] max-2xl:h-full max-[464px]:h-[450px] max-[350px]:h-[350px]">
+                            <img
+                              src={postPageInfo.file}
+                              alt={postPageInfo.description}
+                              className="object-cover h-full max-sm:w-full"
+                            />
+                          </div>
                         ) : (
                           <div className="relative max-sm:pt-64">
                             <video
@@ -160,8 +169,20 @@ export default function PostPage({ open }) {
                     <ProfileLoader />
                   )}
                 </div>
+                <button
+                  onClick={() => handleClose()}
+                  className="p-1 hidden max-sm:block rounded-full bg-hover-primary text-text-primary absolute top-2 right-2"
+                >
+                  <X size={12} />
+                </button>
               </Dialog.Panel>
             </Transition.Child>
+            <button
+              onClick={() => handleClose()}
+              className="p-1 hidden max-xl:block max-sm:hidden rounded-full bg-hover-primary text-text-primary absolute top-2 right-2"
+            >
+              <X size={12} />
+            </button>
           </div>
         </div>
       </Dialog>

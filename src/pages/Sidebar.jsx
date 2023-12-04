@@ -30,7 +30,8 @@ import { fetchNotificationsCountAsync } from "../redux/features/app/appAsyncThun
 
 const Sidebar = ({ pcNavModal }) => {
   const [openMoreModal, setOpenMoreModal] = useState(false);
-  const { active, width } = useSelector((state) => state.app);
+  const { active, width, directChat } = useSelector((state) => state.app);
+  const { conversationsUpdateCount } = directChat;
   const { isLoggedIn, username, loggedInUserId } = useSelector(
     (state) => state.auth
   );
@@ -116,10 +117,8 @@ const Sidebar = ({ pcNavModal }) => {
   ];
 
   const handleNavbar = (idx) => {
-    if (idx !== 6) {
-      // if(idx !== 4){
+    if (idx !== 6 && idx !== 4) {
       dispatch(setActive(idx));
-      // }
     }
     switch (idx) {
       case 0:
@@ -142,6 +141,7 @@ const Sidebar = ({ pcNavModal }) => {
           toast.error("Login your account");
           break;
         }
+        dispatch(setActive(idx));
         dispatch(setNavModal("messages"));
         navigate("/direct/inbox");
         break;
@@ -187,7 +187,7 @@ const Sidebar = ({ pcNavModal }) => {
   return (
     <>
       <section
-        className={`p-[8px] pb-[25px] ${
+        className={`p-[8px] pb-[8px] ${
           !pcNavModal && width >= 1280 ? "w-[250px]" : "w-[75px]"
         } flex flex-col justify-between h-full`}
       >
@@ -216,7 +216,7 @@ const Sidebar = ({ pcNavModal }) => {
                 key={idx}
                 onClick={() => handleNavbar(idx)}
                 className={`flex ${
-                  idx === 5 ? "relative" : null
+                  idx === 5 || idx === 4 ? "relative" : null
                 } group items-center hover:bg-hover-primary py-[11px] mr-[8px] pl-[8px] text-text-primary font-medium space-x-[16px] rounded-lg cursor-pointer transition duration-300`}
               >
                 <div className="flex items-center space-x-2">
@@ -225,6 +225,11 @@ const Sidebar = ({ pcNavModal }) => {
                 </div>
                 {!pcNavModal && width >= 1280 && <h4>{el.title}</h4>}
                 {idx === 5 && <NtfAlert />}
+                {idx === 4 && conversationsUpdateCount > 0 && (
+                  <p className="absolute top-2 bg-red-600 w-4 h-4 rounded-full flex items-center justify-center text-xs">
+                    {conversationsUpdateCount}
+                  </p>
+                )}
               </div>
             ))}
           </div>

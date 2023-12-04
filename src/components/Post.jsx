@@ -16,7 +16,7 @@ function Post({ _id, file, likes, comments, description, type }) {
     if (postPageInfo?._id !== _id) {
       dispatch(resetPostPageInfo());
     }
-    dispatch(postPageStatusToggle());
+    dispatch(postPageStatusToggle(true));
     navigate(`/p/${_id}`);
   };
 
