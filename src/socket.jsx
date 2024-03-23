@@ -5,7 +5,7 @@ const SOCKET_ENDPOINT = "https://instagram-backend-amir.vercel.app/";
 let socket;
 
 const connectSocket = (userId) => {
-  socket = io(SOCKET_ENDPOINT, { query: `userId=${userId}` });
+  socket = io(SOCKET_ENDPOINT, { query: `userId=${userId}`, transports: ["websocket"]});
 
   console.log("connection");
 
