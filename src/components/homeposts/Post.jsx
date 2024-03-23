@@ -19,7 +19,7 @@ import {
 import TextareaAutosize from "react-textarea-autosize";
 import { useDispatch, useSelector } from "react-redux";
 import EmojiPickerModal from "../createposts/EmojiPickerModal";
-import redHeart from "../../assets/icons/redHeart.svg";
+import redHeart from "../../assets/icons/redheart.svg";
 import bookmark from "../../assets/icons/bookmark.svg";
 import toast from "react-hot-toast";
 import {
