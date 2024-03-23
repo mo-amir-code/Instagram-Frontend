@@ -7,7 +7,7 @@ import {
   commentDisLikeAsync,
   commentLikeAsync,
 } from "../../redux/features/app/appAsyncThunk";
-import redHeart from "../../assets/icons/redHeart.svg";
+import redHeart from "../../assets/icons/redheart.svg";
 import { detectLike } from "../../services/appServices";
 import toast from "react-hot-toast";
 

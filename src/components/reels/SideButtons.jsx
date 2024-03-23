@@ -5,7 +5,7 @@ import {
   Heart,
   PaperPlaneTilt,
 } from "@phosphor-icons/react";
-import redHeart from "../../assets/icons/redHeart.svg";
+import redHeart from "../../assets/icons/redheart.svg";
 import bookmark from "../../assets/icons/bookmark.svg";
 import { DotsThree } from "@phosphor-icons/react/dist/ssr";
 import { faker } from "@faker-js/faker";
