@@ -5,7 +5,7 @@ import VerifyButton from "../buttons/VerifyButton";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { verifyAsync } from "../../redux/features/Auth/authSlice"
-import { getLSItem } from "../../services/AuthServices";
+import { getLSItem } from "../../services/authServices";
 
 const SigninForm = () => {
   const dispatch = useDispatch();
