@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-const SOCKET_ENDPOINT = "https://instagram-fullstack-amir.vercel.app/";
+const SOCKET_ENDPOINT = "https://instagram-backend-amir.vercel.app/";
 // const SOCKET_ENDPOINT = "http://localhost:8000/";
 let socket;
 
