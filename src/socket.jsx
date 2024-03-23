@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-const SOCKET_ENDPOINT = process.env.VITE_SERVER_ORIGIN;
+const SOCKET_ENDPOINT = import.meta.env.VITE_SERVER_ORIGIN;
 // const SOCKET_ENDPOINT = "http://localhost:8000/";
 let socket;
 
