@@ -1,6 +1,5 @@
 import axios from "axios";
 
 export const httpAxios = axios.create({
-  baseURL: "https://instagram-backend-amir.vercel.app",
-  // baseURL: "http://localhost:8000",
+  baseURL: import.meta.env.VITE_SERVER_ORIGIN
 });
