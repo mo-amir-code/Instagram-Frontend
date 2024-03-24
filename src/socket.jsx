@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-const SOCKET_ENDPOINT = import.meta.env.VITE_SOCKET_ORIGIN;
+const SOCKET_ENDPOINT = import.meta.env.VITE_SERVER_ORIGIN;
 let socket;
 
 const connectSocket = (userId) => {
