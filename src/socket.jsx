@@ -5,7 +5,12 @@ let socket;
 
 const connectSocket = (userId) => {
   try {  
-    socket = io(SOCKET_ENDPOINT, { query: `userId=${userId}`, transports: ["websocket", "polling"] });
+    socket = io(SOCKET_ENDPOINT, { 
+      query: `userId=${userId}`, 
+      transports: ["websocket", "polling"],
+      reconnection: true,
+      reconnectionAttempts: 5
+    });
     console.log("Socket connection: ", socket);
   } catch (error) {
     console.log(error)
