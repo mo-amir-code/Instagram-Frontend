@@ -5,7 +5,7 @@ let socket;
 
 const connectSocket = (userId) => {
   try {  
-    socket = io(SOCKET_ENDPOINT, { query: `userId=${userId}` });
+    socket = io(SOCKET_ENDPOINT, { query: `userId=${userId}`, transports: ["websocket", "polling"] });
     console.log("Socket connection: ", socket);
   } catch (error) {
     console.log(error)
