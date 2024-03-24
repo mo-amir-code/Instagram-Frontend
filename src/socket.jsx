@@ -6,6 +6,7 @@ let socket;
 const connectSocket = (userId) => {
   try {  
     socket = io(SOCKET_ENDPOINT, { 
+      path: "/socket",
       query: `userId=${userId}`, 
       transports: ["websocket", "polling"],
       reconnection: true,
