@@ -15,7 +15,7 @@ const YourStory = ({ selectStory }) => {
 
   return (
     <div
-      onClick={() => mediaRef.current.click()}
+      // onClick={() => mediaRef.current.click()}
       className="flex flex-col text-white items-center justify-center space-y-1"
     >
       <div className="relative">
