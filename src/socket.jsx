@@ -1,21 +1,13 @@
 import io from "socket.io-client";
 
-const SOCKET_ENDPOINT = import.meta.env.VITE_SERVER_ORIGIN;
+const SOCKET_ENDPOINT = "https://instagram-backend-w2k6.onrender.com/";
+// const SOCKET_ENDPOINT = "http://localhost:8000/";
 let socket;
 
 const connectSocket = (userId) => {
-  try {  
-    socket = io(SOCKET_ENDPOINT, { 
-      path: "/socket",
-      query: `userId=${userId}`, 
-      transports: ["websocket", "polling"],
-      reconnection: true,
-      reconnectionAttempts: 5
-    });
-    console.log("Socket connection: ", socket);
-  } catch (error) {
-    console.log(error)
-  }
+  socket = io(SOCKET_ENDPOINT, { query: `userId=${userId}` });
+
+  console.log("connection");
 
   return () => {
     socket.disconnect(userId);
